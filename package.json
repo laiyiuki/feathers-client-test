@@ -1,0 +1,17 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon index"
+  },
+  "dependencies": {
+    "@feathersjs/feathers": "^3.1.7",
+    "@feathersjs/rest-client": "^1.4.1",
+    "@feathersjs/socketio-client": "^1.1.0",
+    "axios": "^0.18.0",
+    "feathers-hooks-common": "^4.14.1",
+    "socket.io-client": "^2.1.1"
+  }
+}
