@@ -1,15 +1,16 @@
 const { paramsForServer } = require('feathers-hooks-common');
 const { UserService } = require('./services');
+const axios = require('axios');
 
-const isNewUser = async () => {
+const isNewUser = async (phoneNumber, countryCode) => {
   // Sign up - step 1 check for unique phone num
   // if true: twillio will send you sms with code
   try {
     const user = await UserService.find(
       paramsForServer({
         query: {
-          phone: '96344902',
-          countryCode: '852',
+          phoneNumber,
+          countryCode,
         },
         action: 'sign-up',
       }),
@@ -27,12 +28,27 @@ const isNewUser = async () => {
   }
 };
 
-const createUser = async () => {
+const verifyPhone = async (phoneNumber, countryCode, verifyCode) => {
+  try {
+    const res = await axios.post('http://localhost:3030/verify-phone', {
+      phoneNumber,
+      countryCode,
+      verifyCode,
+    });
+    console.log('verify response', res.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const createUser = async (phoneNumber, countryCode, name, password) => {
   try {
     const user = await UserService.create({
-      phone: '96344902',
-      countryCode: '852',
-      verifyCode: '5952',
+      phoneNumber,
+      countryCode,
+      name,
+      password,
+      roles: ['teacher'],
     });
 
     // Return Object
@@ -52,6 +68,7 @@ const saveUserName = async (userId, name) => {
   }
 };
 
-// isNewUser();
-// createUser();
-saveUserName('5b42456bee82aa7aaa1b125f', 'Thomas Lia');
+// isNewUser('96344902', '852');
+// verifyPhone('96344902', '852', '1196');
+createUser('96344902', '852', 'Thomas', 'abcd');
+// saveUserName('5b42456bee82aa7aaa1b125f', 'Thomas Lia');
