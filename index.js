@@ -2,6 +2,8 @@ const { paramsForServer } = require('feathers-hooks-common');
 const { UserService } = require('./services');
 const axios = require('axios');
 
+//
+
 const isNewUser = async (phoneNumber, countryCode) => {
   // Sign up - step 1 check for unique phone num
   // if true: twillio will send you sms with code
@@ -28,6 +30,8 @@ const isNewUser = async (phoneNumber, countryCode) => {
   }
 };
 
+//
+
 const verifyPhone = async (phoneNumber, countryCode, verifyCode) => {
   try {
     const res = await axios.post('http://localhost:3030/verify-phone', {
@@ -40,6 +44,8 @@ const verifyPhone = async (phoneNumber, countryCode, verifyCode) => {
     console.log(err);
   }
 };
+
+//
 
 const createUser = async (phoneNumber, countryCode, name, password) => {
   try {
@@ -58,6 +64,8 @@ const createUser = async (phoneNumber, countryCode, name, password) => {
     console.log('err', err);
   }
 };
+
+//
 
 const saveUserName = async (userId, name) => {
   try {
