@@ -6,6 +6,8 @@ const { paramsForServer } = require('feathers-hooks-common');
 const { UserService } = require('./services');
 const axios = require('axios');
 
+const HOST = 'https://quiet-garden-63699.herokuapp.com';
+
 const feathersClient = require('./services/feathersSocketClient');
 //
 //
@@ -57,7 +59,7 @@ const isNewUser = async (phoneNumber, countryCode) => {
 
 const verifyPhone = async (phoneNumber, countryCode, verifyCode) => {
   try {
-    const res = await axios.post('http://localhost:3030/verify-phone', {
+    const res = await axios.post(`${HOST}/verify-phone`, {
       phoneNumber,
       countryCode,
       verifyCode,
@@ -117,14 +119,14 @@ const updateUser = async (userId, data) => {
 //
 //
 // isNewUser('96344902', '852');
-// verifyPhone('96344902', '852', '1196');
-// createUser('96344902', '852', 'Thomas', '1234');
+// verifyPhone('96344902', '852', '6098');
+createUser('9634402', '852', 'Thomas', '1234');
 
-updateUser('5b447546eea2b6557b4bcc50', {
-  birthday: new Date(),
-  name: 'John',
-});
-///
+// updateUser('5b447546eea2b6557b4bcc50', {
+//   birthday: new Date(),
+//   name: 'John',
+// });
+// ///
 //
 //
 //

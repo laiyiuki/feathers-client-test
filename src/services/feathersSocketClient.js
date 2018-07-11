@@ -5,7 +5,7 @@ const auth = require('@feathersjs/authentication-client');
 
 // feathers socket client
 const client = feathers();
-const socket = io('http://localhost:3030');
+const socket = io('https://quiet-garden-63699.herokuapp.com');
 client.configure(socketio(socket));
 client.configure(
   auth({
