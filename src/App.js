@@ -113,20 +113,43 @@ const updateUser = async (userId, data) => {
 };
 //
 //
-//
+const bgLogin = async () => {
+  try {
+    const res = await feathersClient.authenticate();
+    console.log('authenticated');
+    console.log('res', res);
+  } catch (err) {
+    console.log('Not authenticate', err);
+  }
+};
 //
 
+const pwdLogin = async (phone, password) => {
+  try {
+    const res = await feathersClient.authenticate({
+      strategy: 'local',
+      phone,
+      password,
+    });
+
+    console.log('User created: ', res);
+  } catch (err) {
+    console.log('not authenticate', err);
+  }
+};
 //
 //
+// bgLogin();
+// pwdLogin('85296344902', '1234');
 // isNewUser('96344902', '852');
 // verifyPhone('96344902', '852', '6098');
-createUser('9634402', '852', 'Thomas', '1234');
+// createUser('9634401', '852', 'Paul', '1234');
 
-// updateUser('5b447546eea2b6557b4bcc50', {
-//   birthday: new Date(),
-//   name: 'John',
-// });
-// ///
+updateUser('5b46c57fe9d73300143b25f8', {
+  birthday: new Date(),
+  name: 'Peter',
+});
+///
 //
 //
 //
