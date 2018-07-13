@@ -6,7 +6,8 @@ const { paramsForServer } = require('feathers-hooks-common');
 const { UserService } = require('./services');
 const axios = require('axios');
 
-const HOST = 'https://quiet-garden-63699.herokuapp.com';
+// const HOST = 'https://quiet-garden-63699.herokuapp.com';
+const HOST = 'http://localhost:3030';
 
 const feathersClient = require('./services/feathersSocketClient');
 //
@@ -115,9 +116,15 @@ const updateUser = async (userId, data) => {
 //
 const bgLogin = async () => {
   try {
-    const res = await feathersClient.authenticate();
-    console.log('authenticated');
-    console.log('res', res);
+    const res = await feathersClient.authenticate({
+      strategy: 'jwt',
+      accessToken: window.localStorage.learnla,
+      action: 'teacher',
+    });
+    // const res = await feathersClient.authenticate();
+
+    // const res = await feathersClient.authenticate({ action: 'test' });
+    console.log('authentication:', res);
   } catch (err) {
     console.log('Not authenticate', err);
   }
@@ -126,35 +133,55 @@ const bgLogin = async () => {
 
 const pwdLogin = async (phone, password) => {
   try {
-    const res = await feathersClient.authenticate({
-      strategy: 'local',
-      phone,
-      password,
-    });
+    const res = await feathersClient.authenticate(
+      {
+        strategy: 'local',
+        phone,
+        password,
+        action: 'teacher',
+      },
+      // paramsForServer({
+      //   query: { abc: 1 },
+      //   action: 'teacher-login',
+      // }),
+    );
 
     console.log('User created: ', res);
   } catch (err) {
     console.log('not authenticate', err);
   }
 };
+
+const timeslots = [
+  {
+    days: [1, 2],
+    startTime: '09:00',
+  },
+];
 //
 //
-// bgLogin();
+bgLogin();
 // pwdLogin('85296344902', '1234');
 // isNewUser('96344902', '852');
 // verifyPhone('96344902', '852', '6098');
-// createUser('9634401', '852', 'Paul', '1234');
+// createUser('96344902', '852', 'Paul', '1234');
 
-updateUser('5b46c57fe9d73300143b25f8', {
-  birthday: new Date(),
-  name: 'Peter',
-});
+// updateUser('5b46c57fe9d73300143b25f8', {
+//   birthday: new Date(),
+//   name: 'Peter',
+// });
 ///
 //
 //
 //
 
 class App extends Component {
+  async componentDidMount() {}
+
+  logout = () => {
+    feathersClient.logout();
+  };
+
   render() {
     return (
       <div className="App">
@@ -165,6 +192,13 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+        <button
+          onClick={() => this.logout()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          LOG OUT
+        </button>
       </div>
     );
   }
