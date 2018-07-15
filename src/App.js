@@ -160,23 +160,23 @@ const timeslots = [
 ];
 //
 //
-bgLogin();
+// bgLogin();
 // pwdLogin('85296344902', '1234');
 // isNewUser('96344902', '852');
 // verifyPhone('96344902', '852', '6098');
-// createUser('96344902', '852', 'Paul', '1234');
+createUser('96344934', '852', 'Paul', '1234');
 
-// updateUser('5b46c57fe9d73300143b25f8', {
+// updateUser('5b48ae04fcd4f69d5cc7e070', {
 //   birthday: new Date(),
 //   name: 'Peter',
 // });
-///
+// ///
 //
 //
 //
 
 class App extends Component {
-  async componentDidMount() {}
+  // async componentDidMount() {}
 
   logout = () => {
     feathersClient.logout();
