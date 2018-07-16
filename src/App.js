@@ -81,15 +81,15 @@ const createUser = async (phoneNumber, countryCode, name, password) => {
         countryCode,
         name,
         password,
-        roles: ['teacher'],
       },
-      paramsForServer({ action: 'phone-sign-up' }),
+      paramsForServer({ action: 'phone-sign-up', platform: 'teacher' }),
     );
 
     const signedIn = await feathersClient.authenticate({
       strategy: 'local',
       phone: user.phone,
       password,
+      platform: 'teacher',
     });
 
     console.log('User created: ', user);
@@ -117,9 +117,13 @@ const updateUser = async (userId, data) => {
 const bgLogin = async () => {
   try {
     const res = await feathersClient.authenticate({
-      strategy: 'jwt',
-      accessToken: window.localStorage.learnla,
-      action: 'teacher',
+      // strategy: 'jwt',
+      // accessToken: window.localStorage.learnla,
+      // platform: 'teacher',
+      strategy: 'local',
+      phone: '85296344909',
+      password: '1234',
+      platform: 'admin',
     });
     // const res = await feathersClient.authenticate();
 
@@ -138,7 +142,7 @@ const pwdLogin = async (phone, password) => {
         strategy: 'local',
         phone,
         password,
-        action: 'teacher',
+        platform: 'teacher',
       },
       // paramsForServer({
       //   query: { abc: 1 },
@@ -152,21 +156,21 @@ const pwdLogin = async (phone, password) => {
   }
 };
 
-const timeslots = [
-  {
-    days: [1, 2],
-    startTime: '09:00',
-  },
-];
+// const timeslots = [
+//   {
+//     days: [1, 2],
+//     startTime: '09:00',
+//   },
+// ];
 //
 //
 // bgLogin();
-// pwdLogin('85296344902', '1234');
+// pwdLogin('85296344901', '1234');
 // isNewUser('96344902', '852');
 // verifyPhone('96344902', '852', '6098');
-createUser('96344934', '852', 'Paul', '1234');
+createUser('96344903', '852', 'Paul', '1234');
 
-// updateUser('5b48ae04fcd4f69d5cc7e070', {
+// updateUser('5b4c799d9fe23f8e70eabe8d', {
 //   birthday: new Date(),
 //   name: 'Peter',
 // });
