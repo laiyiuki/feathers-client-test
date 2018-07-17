@@ -151,10 +151,19 @@ const pwdLogin = async (phone, password) => {
   }
 };
 
+const updateTeacher = async (id, data) => {
+  try {
+    const res = await feathersClient.service('teachers').patch(id, data);
+    console.log("updated teacher's profile", res);
+  } catch (err) {
+    console.log('err', err);
+  }
+};
 //
 //
 bgLogin();
-// pwdLogin('85296344901', '1234');
+// updateTeacher('5b4c799d9fe23f8e70eabe8e', { test: 'abc' });
+// pwdLogin('85296344902', '1234');
 // isNewUser('96344902', '852');
 // verifyPhone('96344902', '852', '6098');
 // createUser('96344903', '852', 'Paul', '1234');
@@ -176,15 +185,10 @@ class App extends Component {
   };
 
   update = async () => {
-    const userId = '5b4c799d9fe23f8e70eabe8d';
-    const data = { birthday: new Date(), name: 'John' };
-
-    try {
-      const user = await UserService.patch(userId, { ...data });
-      console.log('user updated: ', user);
-    } catch (err) {
-      console.log('err', err);
-    }
+    updateTeacher('5b4c799d9fe23f8e70eabe8e', {
+      bio: 'My bio',
+      user: { gender: 'male', phone: 'abc' },
+    });
   };
 
   render() {
