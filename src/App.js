@@ -10,12 +10,17 @@ const axios = require('axios');
 const HOST = 'http://localhost:3030';
 
 const feathersClient = require('./services/feathersSocketClient');
-//
-//
-//
-// auth on start
-//
-//
+
+// Handle Auto reauthenticate when socket re-connected
+feathersClient.on('reauthentication-error', async err => {
+  console.log('reauthentication-error', err);
+  const reauthenticate = await feathersClient.authenticate({
+    strategy: 'jwt',
+    accessToken: window.localStorage.learnla,
+    platform: 'teacher',
+  });
+  console.log('reauthenticated', reauthenticate);
+});
 
 const login = async (phone, password) => {
   try {
@@ -23,8 +28,9 @@ const login = async (phone, password) => {
       strategy: 'local',
       phone,
       password,
+      platform: 'teacher',
     });
-    console.log('login res', res);
+    console.log('login success', res);
   } catch (err) {
     console.log(err);
   }
@@ -72,7 +78,7 @@ const verifyPhone = async (phoneNumber, countryCode, verifyCode) => {
 };
 
 //
-
+// ****
 const createUser = async (phoneNumber, countryCode, name, password) => {
   try {
     const user = await UserService.create(
@@ -114,20 +120,15 @@ const updateUser = async (userId, data) => {
 };
 //
 //
+// ***
 const bgLogin = async () => {
   try {
     const res = await feathersClient.authenticate({
-      // strategy: 'jwt',
-      // accessToken: window.localStorage.learnla,
-      // platform: 'teacher',
-      strategy: 'local',
-      phone: '85296344909',
-      password: '1234',
-      platform: 'admin',
+      strategy: 'jwt',
+      accessToken: window.localStorage.learnla,
+      platform: 'teacher',
     });
-    // const res = await feathersClient.authenticate();
 
-    // const res = await feathersClient.authenticate({ action: 'test' });
     console.log('authentication:', res);
   } catch (err) {
     console.log('Not authenticate', err);
@@ -137,18 +138,12 @@ const bgLogin = async () => {
 
 const pwdLogin = async (phone, password) => {
   try {
-    const res = await feathersClient.authenticate(
-      {
-        strategy: 'local',
-        phone,
-        password,
-        platform: 'teacher',
-      },
-      // paramsForServer({
-      //   query: { abc: 1 },
-      //   action: 'teacher-login',
-      // }),
-    );
+    const res = await feathersClient.authenticate({
+      strategy: 'local',
+      phone,
+      password,
+      platform: 'teacher',
+    });
 
     console.log('User created: ', res);
   } catch (err) {
@@ -156,19 +151,13 @@ const pwdLogin = async (phone, password) => {
   }
 };
 
-// const timeslots = [
-//   {
-//     days: [1, 2],
-//     startTime: '09:00',
-//   },
-// ];
 //
 //
-// bgLogin();
+bgLogin();
 // pwdLogin('85296344901', '1234');
 // isNewUser('96344902', '852');
 // verifyPhone('96344902', '852', '6098');
-createUser('96344903', '852', 'Paul', '1234');
+// createUser('96344903', '852', 'Paul', '1234');
 
 // updateUser('5b4c799d9fe23f8e70eabe8d', {
 //   birthday: new Date(),
@@ -184,6 +173,18 @@ class App extends Component {
 
   logout = () => {
     feathersClient.logout();
+  };
+
+  update = async () => {
+    const userId = '5b4c799d9fe23f8e70eabe8d';
+    const data = { birthday: new Date(), name: 'John' };
+
+    try {
+      const user = await UserService.patch(userId, { ...data });
+      console.log('user updated: ', user);
+    } catch (err) {
+      console.log('err', err);
+    }
   };
 
   render() {
@@ -202,6 +203,16 @@ class App extends Component {
           style={{ cursor: 'pointer' }}
         >
           LOG OUT
+        </button>
+        <br />
+        <br />
+        <br />
+        <button
+          onClick={() => this.update()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Call update
         </button>
       </div>
     );
