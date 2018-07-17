@@ -150,7 +150,11 @@ const pwdLogin = async (phone, password) => {
     console.log('not authenticate', err);
   }
 };
-
+//
+//
+//
+//
+//
 const updateTeacher = async (id, data) => {
   try {
     const res = await feathersClient.service('teachers').patch(id, data);
@@ -178,7 +182,9 @@ bgLogin();
 //
 
 class App extends Component {
-  // async componentDidMount() {}
+  async componentDidMount() {
+    bgLogin();
+  }
 
   logout = () => {
     feathersClient.logout();
