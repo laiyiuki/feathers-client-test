@@ -1,7 +1,31 @@
-const feathersSocketClient = require('./feathersSocketClient');
+import feathersClient from './feathersSocketClient';
 
-const UserService = feathersSocketClient.service('users');
+const AuthByJWT = async () => {
+  return feathersClient.authenticate({
+    strategy: 'jwt',
+    accessToken: window.localStorage.learnla,
+    platform: 'teacher',
+  });
+};
 
-module.exports = {
+const AuthByPassword = async (phone, password) => {
+  return feathersClient.authenticate({
+    strategy: 'local',
+    phone,
+    password,
+    platform: 'teacher',
+  });
+};
+
+const UserService = feathersClient.service('users');
+const TeacherService = feathersClient.service('teachers');
+const CourseAdService = feathersClient.service('course-ads');
+
+export {
+  feathersClient,
+  AuthByJWT,
+  AuthByPassword,
   UserService,
+  TeacherService,
+  CourseAdService,
 };

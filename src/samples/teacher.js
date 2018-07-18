@@ -2,11 +2,11 @@ const teacher = {
   _id: "5b4c799d9fe23f8e70eabe8d",
   role: 'organization', // personal / organization
   organization: 'HK Tutors Ltd',
-  occupation: 'English teacher',
+  // occupation: 'English teacher',
   video: 'link to video',
   educationLevel: 'Master Degree',
   school: 'HKU',
-  district: 'Central & Western District', // currently type String
+  // district: 'Central & Western District', // currently type String
   bio: 'I am good at traching',
   profession: 'Teaching',
   award: 'HK English Award 2018',
@@ -18,7 +18,7 @@ const teacher = {
   // timeTable: [], // not yet confirmed
   courses: [{
     _id: 'ObjectId',
-    category: { type:  },
+    category: { type: String },
     title: { type: String, required: true },
     level: { type: Number, required: true, default: 1000 },
     image: { type: String },

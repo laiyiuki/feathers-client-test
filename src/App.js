@@ -2,14 +2,23 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import {
+  feathersClient,
+  AuthByJWT,
+  AuthByPassword,
+  UserService,
+  TeacherService,
+  CourseAdService,
+} from './services';
+import { getTeacherProfile, modifyTeacherProfile } from './controllers';
+
 const { paramsForServer } = require('feathers-hooks-common');
-const { UserService } = require('./services');
 const axios = require('axios');
 
 // const HOST = 'https://quiet-garden-63699.herokuapp.com';
 const HOST = 'http://localhost:3030';
 
-const feathersClient = require('./services/feathersSocketClient');
+// const feathersClient = require('./services/feathersSocketClient');
 
 // Handle Auto reauthenticate when socket re-connected
 feathersClient.on('reauthentication-error', async err => {
@@ -107,17 +116,17 @@ const createUser = async (phoneNumber, countryCode, name, password) => {
 
 //
 
-const updateUser = async (userId, data) => {
-  try {
-    // Call once when the app launch
-    await feathersClient.authenticate();
-
-    const user = await UserService.patch(userId, { ...data });
-    console.log('user updated: ', user);
-  } catch (err) {
-    console.log('err', err);
-  }
-};
+// const updateUser = async (userId, data) => {
+//   try {
+//     // Call once when the app launch
+//     await feathersClient.authenticate();
+//
+//     const user = await UserService.patch(userId, { ...data });
+//     console.log('user updated: ', user);
+//   } catch (err) {
+//     console.log('err', err);
+//   }
+// };
 //
 //
 // ***
@@ -165,12 +174,45 @@ const updateTeacher = async (id, data) => {
 };
 //
 //
-bgLogin();
+// const res = await FeathersClient.service(`s`)(id, {
+//
+// const res = await FeathersClient.service(`${APP.platform}s`).patch(id, {
+//      courses: [{
+//        category: 'test', title: 'test', level: 1, status: 'new',
+//      }],
+//    });
+
+//
+//
+const createCourseAd = async data => {
+  try {
+    const ad = await CourseAdService.create(data);
+    console.log('ad created', ad);
+  } catch (err) {
+    console.log('fail to create ad', err);
+  }
+};
+
+const modifyCourseAd = async (id, data, params = {}) => {
+  try {
+    const ad = await CourseAdService.patch(id, data, params);
+    console.log('ad modified', ad);
+  } catch (err) {
+    console.log('modify ad error', err);
+  }
+};
+//
+
+//
+//
+//
+//
+// bgLogin();
 // updateTeacher('5b4c799d9fe23f8e70eabe8e', { test: 'abc' });
 // pwdLogin('85296344902', '1234');
 // isNewUser('96344902', '852');
 // verifyPhone('96344902', '852', '6098');
-// createUser('96344903', '852', 'Paul', '1234');
+// createUser('96344909', '852', 'Paul', '1234');
 
 // updateUser('5b4c799d9fe23f8e70eabe8d', {
 //   birthday: new Date(),
@@ -182,20 +224,52 @@ bgLogin();
 //
 
 class App extends Component {
+  state = {
+    phone: '85296344902',
+    password: '1234',
+    profile: {},
+  };
+
   async componentDidMount() {
-    bgLogin();
+    try {
+      const response = await AuthByJWT();
+      this.setState({
+        profile: response.profile,
+      });
+      console.log('authenticated', response);
+    } catch (err) {
+      console.log('authentication error', err);
+    }
+
+    // Handle Auto reauthenticate when socket re-connected
+    feathersClient.on('reauthentication-error', async err => {
+      console.log('reauthentication-error', err);
+      try {
+        const response = await AuthByJWT();
+        this.setState({
+          profile: response.profile,
+        });
+        console.log('re-authenticated', response);
+      } catch (err) {
+        console.log('authentication error', err);
+      }
+    });
   }
 
-  logout = () => {
-    feathersClient.logout();
+  login = async () => {
+    const { phone, password } = this.state;
+    try {
+      const response = await AuthByPassword(phone, password);
+      this.setState({
+        profile: response.profile,
+      });
+      console.log('login success', response);
+    } catch (err) {
+      console.log('login fails', err);
+    }
   };
 
-  update = async () => {
-    updateTeacher('5b4c799d9fe23f8e70eabe8e', {
-      bio: 'My bio',
-      user: { gender: 'male', phone: 'abc' },
-    });
-  };
+  logout = () => feathersClient.logout();
 
   render() {
     return (
@@ -207,6 +281,34 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+        <h3>{`Hello, ${
+          this.state.profile.user ? this.state.profile.user.name : null
+        }`}</h3>
+        <br />
+        <br />
+        <label>Phone</label>
+        <input
+          type="text"
+          value={this.state.phone}
+          onChange={e => this.setState({ phone: e.target.value })}
+        />
+        <br />
+        <label>Password</label>
+        <input
+          type="text"
+          value={this.state.password}
+          onChange={e => this.setState({ password: e.target.value })}
+        />
+        <br />
+        <button
+          onClick={() => this.login()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          LOG IN
+        </button>
+        <br />
+        <br />
         <button
           onClick={() => this.logout()}
           type="button"
@@ -217,13 +319,6 @@ class App extends Component {
         <br />
         <br />
         <br />
-        <button
-          onClick={() => this.update()}
-          type="button"
-          style={{ cursor: 'pointer' }}
-        >
-          Call update
-        </button>
       </div>
     );
   }
