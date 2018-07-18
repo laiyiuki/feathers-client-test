@@ -7,105 +7,44 @@ import {
   AuthByJWT,
   AuthByPassword,
   UserService,
-  TeacherService,
+  // TeacherService,
   CourseAdService,
 } from './services';
-import { getTeacherProfile, modifyTeacherProfile } from './controllers';
 
-const { paramsForServer } = require('feathers-hooks-common');
+import {
+  phoneSignUp,
+  verifyPhone,
+  teacherSignUpByPhone,
+  // getUser,
+  // modifyUser,
+  // getTeacherProfile,
+  // modifyTeacherProfile,
+  // getCourseAd,
+  // modifyCourseAd,
+  // findCourseAdsByTeacherId,
+  // findCourseAds,
+} from './controllers';
+
+import { paramsForServer } from 'feathers-hooks-common';
 const axios = require('axios');
 
 // const HOST = 'https://quiet-garden-63699.herokuapp.com';
 const HOST = 'http://localhost:3030';
 
-// const feathersClient = require('./services/feathersSocketClient');
+// (async function() {
+//   console.log('phoneSignUp', await phoneSignUp('85296344902', '852'));
+// })();
 
-// Handle Auto reauthenticate when socket re-connected
-feathersClient.on('reauthentication-error', async err => {
-  console.log('reauthentication-error', err);
-  const reauthenticate = await feathersClient.authenticate({
-    strategy: 'jwt',
-    accessToken: window.localStorage.learnla,
-    platform: 'teacher',
-  });
-  console.log('reauthenticated', reauthenticate);
-});
-
-const login = async (phone, password) => {
-  try {
-    const res = await feathersClient.authenticate({
-      strategy: 'local',
-      phone,
-      password,
-      platform: 'teacher',
-    });
-    console.log('login success', res);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const isNewUser = async (phoneNumber, countryCode) => {
-  // Sign up - step 1 check for unique phone num
-  // if true: twillio will send you sms with code
-  try {
-    const user = await UserService.find(
-      paramsForServer({
-        query: {
-          phoneNumber,
-          countryCode,
-        },
-        action: 'phone-sign-up',
-      }),
-    );
-
-    // Return Object
-    // @Return - { total: 0, limit: 10, skip: 0, data: [] }
-    if (user.total > 0) {
-      console.log('user already exists', user.data);
-    } else {
-      console.log('This is a new user');
-    }
-  } catch (err) {
-    console.log('err', err);
-  }
-};
-
-//
-
-const verifyPhone = async (phoneNumber, countryCode, verifyCode) => {
-  try {
-    const res = await axios.post(`${HOST}/verify-phone`, {
-      phoneNumber,
-      countryCode,
-      verifyCode,
-    });
-    console.log('verify response', res.data);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-//
-// ****
 const createUser = async (phoneNumber, countryCode, name, password) => {
   try {
-    const user = await UserService.create(
-      {
-        phoneNumber,
-        countryCode,
-        name,
-        password,
-      },
-      paramsForServer({ action: 'phone-sign-up', platform: 'teacher' }),
-    );
-
-    const signedIn = await feathersClient.authenticate({
-      strategy: 'local',
-      phone: user.phone,
+    const user = await teacherSignUpByPhone({
+      phoneNumber,
+      countryCode,
+      name,
       password,
-      platform: 'teacher',
     });
+
+    const signedIn = await AuthByPassword(user.phone, password, 'teacher');
 
     console.log('User created: ', user);
     console.log('signed In', signedIn);
@@ -114,56 +53,6 @@ const createUser = async (phoneNumber, countryCode, name, password) => {
   }
 };
 
-//
-
-// const updateUser = async (userId, data) => {
-//   try {
-//     // Call once when the app launch
-//     await feathersClient.authenticate();
-//
-//     const user = await UserService.patch(userId, { ...data });
-//     console.log('user updated: ', user);
-//   } catch (err) {
-//     console.log('err', err);
-//   }
-// };
-//
-//
-// ***
-const bgLogin = async () => {
-  try {
-    const res = await feathersClient.authenticate({
-      strategy: 'jwt',
-      accessToken: window.localStorage.learnla,
-      platform: 'teacher',
-    });
-
-    console.log('authentication:', res);
-  } catch (err) {
-    console.log('Not authenticate', err);
-  }
-};
-//
-
-const pwdLogin = async (phone, password) => {
-  try {
-    const res = await feathersClient.authenticate({
-      strategy: 'local',
-      phone,
-      password,
-      platform: 'teacher',
-    });
-
-    console.log('User created: ', res);
-  } catch (err) {
-    console.log('not authenticate', err);
-  }
-};
-//
-//
-//
-//
-//
 const updateTeacher = async (id, data) => {
   try {
     const res = await feathersClient.service('teachers').patch(id, data);
@@ -174,16 +63,7 @@ const updateTeacher = async (id, data) => {
 };
 //
 //
-// const res = await FeathersClient.service(`s`)(id, {
-//
-// const res = await FeathersClient.service(`${APP.platform}s`).patch(id, {
-//      courses: [{
-//        category: 'test', title: 'test', level: 1, status: 'new',
-//      }],
-//    });
-
-//
-//
+////
 const createCourseAd = async data => {
   try {
     const ad = await CourseAdService.create(data);
@@ -193,19 +73,6 @@ const createCourseAd = async data => {
   }
 };
 
-const modifyCourseAd = async (id, data, params = {}) => {
-  try {
-    const ad = await CourseAdService.patch(id, data, params);
-    console.log('ad modified', ad);
-  } catch (err) {
-    console.log('modify ad error', err);
-  }
-};
-//
-
-//
-//
-//
 //
 // bgLogin();
 // updateTeacher('5b4c799d9fe23f8e70eabe8e', { test: 'abc' });

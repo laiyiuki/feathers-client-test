@@ -8,12 +8,12 @@ const AuthByJWT = async () => {
   });
 };
 
-const AuthByPassword = async (phone, password) => {
+const AuthByPassword = async (phone, password, platform) => {
   return feathersClient.authenticate({
     strategy: 'local',
     phone,
     password,
-    platform: 'teacher',
+    platform,
   });
 };
 
