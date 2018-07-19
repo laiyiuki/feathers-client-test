@@ -95,6 +95,9 @@ const updateTeacher = async (id, data) => {
 
 class App extends Component {
   state = {
+    name: '',
+    phoneNumber: '',
+    countryCode: '852',
     phone: '85296344902',
     password: '1234',
     profile: {},
@@ -125,6 +128,29 @@ class App extends Component {
       }
     });
   }
+
+  signUp = async () => {
+    try {
+      const { phoneNumber, countryCode, name, password } = this.state;
+      feathersClient.logout();
+      const user = await teacherSignUpByPhone({
+        phoneNumber,
+        countryCode,
+        name,
+        password,
+      });
+
+      const response = await AuthByPassword(user.phone, password, 'teacher');
+      this.setState({
+        profile: response.profile,
+      });
+
+      console.log('User created: ', user);
+      console.log('auto logIn', response.profile.user);
+    } catch (err) {
+      console.log('sign up error', err);
+    }
+  };
 
   login = async () => {
     const { phone, password } = this.state;
@@ -173,7 +199,10 @@ class App extends Component {
 
   findMyCourseAds = async () => {
     try {
-      const query = { teacherId: this.state.profile._id };
+      const query = {
+        teacherId: this.state.profile._id,
+        removedAt: { $exists: false },
+      };
       const { data } = await findCourseAds(query);
 
       console.log('my course ads', data);
@@ -196,6 +225,41 @@ class App extends Component {
           this.state.profile.user ? this.state.profile.user.name : null
         }`}</h3>
         <br />
+        <h3>Sign Up</h3>
+        <form>
+          <label>Name</label>
+          <input
+            type="text"
+            value={this.state.name}
+            onChange={e => this.setState({ name: e.target.value })}
+          />
+          <br />
+          <label>Phone Number</label>
+          <input
+            type="text"
+            value={this.state.phoneNumber}
+            onChange={e => this.setState({ phoneNumber: e.target.value })}
+          />
+          <br />
+          <label>Password</label>
+          <input
+            type="text"
+            value={this.state.password}
+            onChange={e => this.setState({ password: e.target.value })}
+          />
+          <br />
+          <button
+            onClick={() => this.signUp()}
+            type="button"
+            style={{ cursor: 'pointer' }}
+          >
+            Sign Up
+          </button>
+        </form>
+
+        <br />
+        <hr />
+        <h3>Log In</h3>
         <br />
         <label>Phone</label>
         <input
