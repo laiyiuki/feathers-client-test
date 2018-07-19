@@ -69,6 +69,7 @@ async function teacherSignUpByPhone(data) {
     paramsForServer({ action: 'phone-sign-up', platform: 'teacher' }),
   );
 }
+
 /**
  * [getUser description]
  * @param  {string} userId
@@ -98,24 +99,45 @@ async function getTeacherProfile(teacherId) {
   return TeacherService.get(teacherId);
 }
 
-async function modifyTeacherProfile(
-  teacherId,
-  data,
-  params = { query: {}, action: null },
-) {
-  return TeacherService.patch(teacherId, data, paramsForServer(params));
+/**
+ * [modifyTeacherProfile description]
+ * @param  {string} teacherId
+ * @param  {object} data      data to be modified
+ * @param  {Object} [flag={}] [Optional] additional flag for paramsForServer
+ * @return {Object}           full modified teacher profile
+ */
+async function modifyTeacherProfile(teacherId, data, flag = {}) {
+  let params = undefined;
+  if (params) {
+    params = paramsForServer(flag);
+  }
+
+  return TeacherService.patch(teacherId, data, params);
 }
 
+/**
+ * [getCourseAd description]
+ * @param  {string} courseAdId
+ * @return {object}            course ad
+ */
 async function getCourseAd(courseAdId) {
   return CourseAdService.get(courseAdId);
 }
 
-async function modifyCourseAd(
-  courseAdId,
-  data,
-  params = { query: {}, action: null },
-) {
-  return CourseAdService.patch(courseAdId, data, paramsForServer(params));
+/**
+ * [modifyCourseAd description]
+ * @param  {string} courseAdId
+ * @param  {object} data       data to be modified
+ * @param  {object} [flag={}]  Optional flag for paramsForServer
+ * @return {object}            Modified course ad
+ */
+async function modifyCourseAd(courseAdId, data, flag = {}) {
+  let params = undefined;
+  if (params) {
+    params = paramsForServer(flag);
+  }
+
+  return CourseAdService.patch(courseAdId, data, params);
 }
 
 async function findCourseAdsByTeacherId(teacherId, paginate = false) {
@@ -129,14 +151,6 @@ async function findCourseAdsByTeacherId(teacherId, paginate = false) {
   );
 }
 
-/**
- * [findCourseAds description]
- * @param  {object}  [query={}]       query for course ads
- * @param  {Boolean} [paginate=true]  if true, return with pagination
- * @return {Array|Object}             if paginate set true, return Object"
- *                                    { total: 0, limit: 0, skip: 0, data: [courseAds] },
- *                                    if paginate set false: return [coursAds]
- */
 async function findCourseAds(query = {}, paginate = true) {
   return CourseAdService.find(paramsForServer({ query, paginate }));
 }

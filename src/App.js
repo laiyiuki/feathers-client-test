@@ -18,7 +18,7 @@ import {
   // getUser,
   // modifyUser,
   // getTeacherProfile,
-  // modifyTeacherProfile,
+  modifyTeacherProfile,
   // getCourseAd,
   // modifyCourseAd,
   // findCourseAdsByTeacherId,
@@ -55,7 +55,7 @@ const createUser = async (phoneNumber, countryCode, name, password) => {
 
 const updateTeacher = async (id, data) => {
   try {
-    const res = await feathersClient.service('teachers').patch(id, data);
+    const res = await modifyTeacherProfile(id, data);
     console.log("updated teacher's profile", res);
   } catch (err) {
     console.log('err', err);
@@ -75,11 +75,14 @@ const createCourseAd = async data => {
 
 //
 // bgLogin();
-// updateTeacher('5b4c799d9fe23f8e70eabe8e', { test: 'abc' });
+// updateTeacher('5b4ff3e2cb8b3904c39843f5', {
+//   user: { name: 'Thomas Lai' },
+//   role: 'personal',
+// });
 // pwdLogin('85296344902', '1234');
 // isNewUser('96344902', '852');
 // verifyPhone('96344902', '852', '6098');
-// createUser('96344909', '852', 'Paul', '1234');
+// createUser('96344902', '852', 'Thomas', '1234');
 
 // updateUser('5b4c799d9fe23f8e70eabe8d', {
 //   birthday: new Date(),
@@ -126,7 +129,7 @@ class App extends Component {
   login = async () => {
     const { phone, password } = this.state;
     try {
-      const response = await AuthByPassword(phone, password);
+      const response = await AuthByPassword(phone, password, 'teacher');
       this.setState({
         profile: response.profile,
       });
@@ -136,7 +139,24 @@ class App extends Component {
     }
   };
 
-  logout = () => feathersClient.logout();
+  logout = () => {
+    feathersClient.logout();
+    this.setState({
+      profile: {},
+    });
+  };
+
+  modifyTeacher = async () => {
+    try {
+      const res = await modifyTeacherProfile('5b4ff3e2cb8b3904c39843f5', {
+        user: { name: 'Thomas Lai' },
+        role: 'personal',
+      });
+      console.log("updated teacher's profile", res);
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
 
   render() {
     return (
@@ -185,6 +205,14 @@ class App extends Component {
         </button>
         <br />
         <br />
+        <br />
+        <button
+          onClick={() => this.modifyTeacher()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Update Teacher Profile
+        </button>
         <br />
       </div>
     );
