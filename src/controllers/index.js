@@ -13,9 +13,10 @@ export {
   modifyUser,
   getTeacherProfile,
   modifyTeacherProfile,
+  createCourseAd,
   getCourseAd,
   modifyCourseAd,
-  findCourseAdsByTeacherId,
+  // findCourseAdsByTeacherId,
   findCourseAds,
 };
 
@@ -82,12 +83,17 @@ async function getUser(userId) {
 /**
  * [modifyUser description]
  * @param  {string} userId
- * @param  {Object} data
- * @param  {Object} params    Additional params for server
- * @return {Object}           Updated user object
+ * @param  {object} data   data to be modified
+ * @param  {object} flag   Optional flag for paramsForServer
+ * @return {object}        Modified user
  */
-async function modifyUser(userId, data, params = { query: {}, action: null }) {
-  return UserService.patch(userId, data, paramsForServer(params));
+async function modifyUser(userId, data, flag) {
+  let params = undefined;
+  if (flag) {
+    params = paramsForServer(flag);
+  }
+
+  return UserService.patch(userId, data, params);
 }
 
 /**
@@ -108,11 +114,20 @@ async function getTeacherProfile(teacherId) {
  */
 async function modifyTeacherProfile(teacherId, data, flag = {}) {
   let params = undefined;
-  if (params) {
+  if (flag) {
     params = paramsForServer(flag);
   }
 
   return TeacherService.patch(teacherId, data, params);
+}
+
+/**
+ * [createCourseAd description]
+ * @param  {object} data
+ * @return {object}      new course ad
+ */
+async function createCourseAd(data) {
+  return CourseAdService.create(data);
 }
 
 /**
@@ -140,17 +155,22 @@ async function modifyCourseAd(courseAdId, data, flag = {}) {
   return CourseAdService.patch(courseAdId, data, params);
 }
 
-async function findCourseAdsByTeacherId(teacherId, paginate = false) {
-  return CourseAdService.find(
-    paramsForServer({
-      query: {
-        teacherId,
-      },
-      paginate,
-    }),
-  );
-}
+// async function findCourseAdsByTeacherId(teacherId, flag={}) {
+//   let params = undefined;
+//   if (flag) {
+//     params = paramsForServer(flag);
+//   }
+//
+//   return CourseAdService.find(
+//     paramsForServer({
+//       query: {
+//         teacherId,
+//       },
+//       paginate,
+//     }),
+//   );
+// }
 
-async function findCourseAds(query = {}, paginate = true) {
-  return CourseAdService.find(paramsForServer({ query, paginate }));
+async function findCourseAds(query = {}, flag = {}) {
+  return CourseAdService.find(paramsForServer({ query, ...flag }));
 }

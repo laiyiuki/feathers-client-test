@@ -13,15 +13,15 @@ import {
 
 import {
   phoneSignUp,
-  verifyPhone,
+  // verifyPhone,
   teacherSignUpByPhone,
   // getUser,
   // modifyUser,
   // getTeacherProfile,
   modifyTeacherProfile,
+  createCourseAd,
   // getCourseAd,
   // modifyCourseAd,
-  // findCourseAdsByTeacherId,
   // findCourseAds,
 } from './controllers';
 
@@ -64,14 +64,14 @@ const updateTeacher = async (id, data) => {
 //
 //
 ////
-const createCourseAd = async data => {
-  try {
-    const ad = await CourseAdService.create(data);
-    console.log('ad created', ad);
-  } catch (err) {
-    console.log('fail to create ad', err);
-  }
-};
+// const createCourseAd = async data => {
+//   try {
+//     const ad = await CourseAdService.create(data);
+//     console.log('ad created', ad);
+//   } catch (err) {
+//     console.log('fail to create ad', err);
+//   }
+// };
 
 //
 // bgLogin();
@@ -158,6 +158,19 @@ class App extends Component {
     }
   };
 
+  createAd = async () => {
+    try {
+      const ad = await createCourseAd({
+        title: 'English Class',
+        fee: 200,
+        duration: 60,
+      });
+      console.log('new course ad created', ad);
+    } catch (err) {
+      console.log('create course ad error', err);
+    }
+  };
+
   render() {
     return (
       <div className="App">
@@ -213,6 +226,17 @@ class App extends Component {
         >
           Update Teacher Profile
         </button>
+        <br />
+        <br />
+        <br />
+        <button
+          onClick={() => this.createAd()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Create Course Ad
+        </button>
+        <br />
         <br />
       </div>
     );
