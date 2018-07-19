@@ -22,7 +22,7 @@ import {
   createCourseAd,
   // getCourseAd,
   // modifyCourseAd,
-  // findCourseAds,
+  findCourseAds,
 } from './controllers';
 
 import { paramsForServer } from 'feathers-hooks-common';
@@ -171,6 +171,17 @@ class App extends Component {
     }
   };
 
+  findMyCourseAds = async () => {
+    try {
+      const query = { teacherId: this.state.profile._id };
+      const { data } = await findCourseAds(query);
+
+      console.log('my course ads', data);
+    } catch (err) {
+      console.log('find my couse add error', err);
+    }
+  };
+
   render() {
     return (
       <div className="App">
@@ -237,6 +248,16 @@ class App extends Component {
           Create Course Ad
         </button>
         <br />
+        <br />
+        <br />
+        <br />
+        <button
+          onClick={() => this.findMyCourseAds()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          My Course Ads
+        </button>
         <br />
       </div>
     );

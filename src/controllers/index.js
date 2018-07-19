@@ -171,6 +171,12 @@ async function modifyCourseAd(courseAdId, data, flag = {}) {
 //   );
 // }
 
+/**
+ * [findCourseAds description]
+ * @param  {object} [query={}]
+ * @param  {Object} [flag={}]  Optional flag for server
+ * @return {Object}            { total: 1, limit: 10, skip: 1, data: [couseAd] }
+ */
 async function findCourseAds(query = {}, flag = {}) {
   return CourseAdService.find(paramsForServer({ query, ...flag }));
 }
