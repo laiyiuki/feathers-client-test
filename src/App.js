@@ -105,6 +105,12 @@ class App extends Component {
 
   async componentDidMount() {
     try {
+      // const response = await feathersClient.authenticate({
+      //   strategy: 'facebookTokenTeacher',
+      //   access_token:
+      //     'EAADWZA0P77j0BAGoM3vaXUQc6BIqlyEz9aKt5lHzPYtGGdZAqklRZCGQjORo8MJbmUAGDRdJhp9Tsp7cZAfZB0UwQZBXpgtGcnRGpb2WdqDheNoR0ZBRGatnoV0M90DIzKSqjtGZBNKHXvZCtWStvSJkgBkUyUlCcFWDlTuRcZBXi5x75iMMRf94jTSnIP7VZCXBF1zsL13XQXfc6IltpmDdLt6orlj8SZABMZCIZD',
+      //   platform: 'teacher',
+      // });
       const response = await AuthByJWT();
       this.setState({
         profile: response.profile,
@@ -186,6 +192,11 @@ class App extends Component {
 
   createAd = async () => {
     try {
+      const updatedUser = await modifyTeacherProfile(this.state.profile._id, {
+        fee: 10000,
+      });
+      console.log('updatedUser', updatedUser);
+
       const ad = await createCourseAd({
         title: 'English Class',
         fee: 200,

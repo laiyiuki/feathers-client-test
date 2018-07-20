@@ -109,11 +109,12 @@ async function getTeacherProfile(teacherId) {
  * [modifyTeacherProfile description]
  * @param  {string} teacherId
  * @param  {object} data      data to be modified
- * @param  {Object} [flag={}] [Optional] additional flag for paramsForServer
+ * @param  {Object} flag      [Optional] additional flag for paramsForServer
  * @return {Object}           full modified teacher profile
  */
-async function modifyTeacherProfile(teacherId, data, flag = {}) {
+async function modifyTeacherProfile(teacherId, data, flag) {
   let params = undefined;
+
   if (flag) {
     params = paramsForServer(flag);
   }
@@ -143,10 +144,10 @@ async function getCourseAd(courseAdId) {
  * [modifyCourseAd description]
  * @param  {string} courseAdId
  * @param  {object} data       data to be modified
- * @param  {object} [flag={}]  Optional flag for paramsForServer
+ * @param  {object} flag       Optional flag for paramsForServer
  * @return {object}            Modified course ad
  */
-async function modifyCourseAd(courseAdId, data, flag = {}) {
+async function modifyCourseAd(courseAdId, data, flag) {
   let params = undefined;
   if (params) {
     params = paramsForServer(flag);
@@ -174,9 +175,9 @@ async function modifyCourseAd(courseAdId, data, flag = {}) {
 /**
  * [findCourseAds description]
  * @param  {object} [query={}]
- * @param  {Object} [flag={}]  Optional flag for server
+ * @param  {Object} flag       Optional flag for server
  * @return {Object}            { total: 1, limit: 10, skip: 1, data: [couseAd] }
  */
-async function findCourseAds(query = {}, flag = {}) {
+async function findCourseAds(query = {}, flag) {
   return CourseAdService.find(paramsForServer({ query, ...flag }));
 }
