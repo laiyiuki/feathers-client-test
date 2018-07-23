@@ -21,7 +21,7 @@ import {
   modifyTeacherProfile,
   createCourseAd,
   // getCourseAd,
-  // modifyCourseAd,
+  modifyCourseAd,
   findCourseAds,
 } from './controllers';
 
@@ -101,6 +101,7 @@ class App extends Component {
     phone: '85296344902',
     password: '1234',
     profile: {},
+    courseAdId: '',
   };
 
   async componentDidMount() {
@@ -115,6 +116,7 @@ class App extends Component {
       this.setState({
         profile: response.profile,
       });
+
       console.log('authenticated', response);
     } catch (err) {
       console.log('authentication error', err);
@@ -180,7 +182,7 @@ class App extends Component {
 
   modifyTeacher = async () => {
     try {
-      const res = await modifyTeacherProfile('5b4ff3e2cb8b3904c39843f5', {
+      const res = await modifyTeacherProfile(this.state.profile._id, {
         user: { name: 'Thomas Lai' },
         role: 'personal',
       });
@@ -192,17 +194,32 @@ class App extends Component {
 
   createAd = async () => {
     try {
-      const updatedUser = await modifyTeacherProfile(this.state.profile._id, {
-        fee: 10000,
-      });
-      console.log('updatedUser', updatedUser);
+      // const updatedUser = await modifyTeacherProfile(this.state.profile._id, {
+      //   fee: 10000,
+      // });
+      // console.log('updatedUser', updatedUser);
 
       const ad = await createCourseAd({
         title: 'English Class',
         fee: 200,
         duration: 60,
       });
+      this.setState({
+        courseAdId: ad._id,
+      });
       console.log('new course ad created', ad);
+    } catch (err) {
+      console.log('create course ad error', err);
+    }
+  };
+
+  changeAd = async () => {
+    try {
+      const ad = await modifyCourseAd(this.state.courseAdId, {
+        title: 'English Class',
+        fee: 200,
+      });
+      console.log('updated course Ad', ad);
     } catch (err) {
       console.log('create course ad error', err);
     }
@@ -332,6 +349,16 @@ class App extends Component {
           style={{ cursor: 'pointer' }}
         >
           My Course Ads
+        </button>
+        <br />
+        <br />
+        <br />
+        <button
+          onClick={() => this.changeAd()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Update Ad
         </button>
         <br />
       </div>
