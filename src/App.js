@@ -182,11 +182,14 @@ class App extends Component {
 
   modifyTeacher = async () => {
     try {
-      const res = await modifyTeacherProfile(this.state.profile._id, {
+      const teacher = await modifyTeacherProfile(this.state.profile._id, {
         user: { name: 'Thomas Lai' },
         role: 'personal',
       });
-      console.log("updated teacher's profile", res);
+      this.setState({
+        profile: teacher,
+      });
+      console.log("updated teacher's profile", teacher);
     } catch (err) {
       console.log('err', err);
     }
@@ -250,7 +253,9 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         <h3>{`Hello, ${
-          this.state.profile.user ? this.state.profile.user.name : null
+          this.state.profile && this.state.profile.user
+            ? this.state.profile.user.name
+            : null
         }`}</h3>
         <br />
         <h3>Sign Up</h3>
