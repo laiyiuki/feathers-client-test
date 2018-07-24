@@ -106,35 +106,36 @@ class App extends Component {
 
   async componentDidMount() {
     try {
-      // const response = await feathersClient.authenticate({
-      //   strategy: 'facebookTokenTeacher',
-      //   access_token:
-      //     'EAADWZA0P77j0BAGoM3vaXUQc6BIqlyEz9aKt5lHzPYtGGdZAqklRZCGQjORo8MJbmUAGDRdJhp9Tsp7cZAfZB0UwQZBXpgtGcnRGpb2WdqDheNoR0ZBRGatnoV0M90DIzKSqjtGZBNKHXvZCtWStvSJkgBkUyUlCcFWDlTuRcZBXi5x75iMMRf94jTSnIP7VZCXBF1zsL13XQXfc6IltpmDdLt6orlj8SZABMZCIZD',
-      //   platform: 'teacher',
-      // });
-      const response = await AuthByJWT();
-      this.setState({
-        profile: response.profile,
+      const response = await feathersClient.authenticate({
+        strategy: 'facebookTokenTeacher',
+        access_token:
+          'EAADWZA0P77j0BAGoM3vaXUQc6BIqlyEz9aKt5lHzPYtGGdZAqklRZCGQjORo8MJbmUAGDRdJhp9Tsp7cZAfZB0UwQZBXpgtGcnRGpb2WdqDheNoR0ZBRGatnoV0M90DIzKSqjtGZBNKHXvZCtWStvSJkgBkUyUlCcFWDlTuRcZBXi5x75iMMRf94jTSnIP7VZCXBF1zsL13XQXfc6IltpmDdLt6orlj8SZABMZCIZD',
+        platform: 'teacher',
       });
 
-      console.log('authenticated', response);
+      // const response = await AuthByJWT();
+      // this.setState({
+      //   profile: response.profile,
+      // });
+      //
+      // console.log('authenticated', response);
     } catch (err) {
       console.log('authentication error', err);
     }
 
     // Handle Auto reauthenticate when socket re-connected
-    feathersClient.on('reauthentication-error', async err => {
-      console.log('reauthentication-error', err);
-      try {
-        const response = await AuthByJWT();
-        this.setState({
-          profile: response.profile,
-        });
-        console.log('re-authenticated', response);
-      } catch (err) {
-        console.log('authentication error', err);
-      }
-    });
+    // feathersClient.on('reauthentication-error', async err => {
+    //   console.log('reauthentication-error', err);
+    //   try {
+    //     const response = await AuthByJWT();
+    //     this.setState({
+    //       profile: response.profile,
+    //     });
+    //     console.log('re-authenticated', response);
+    //   } catch (err) {
+    //     console.log('authentication error', err);
+    //   }
+    // });
   }
 
   signUp = async () => {

@@ -1,4 +1,5 @@
 const findMyCourseAds = {
-  teacherId: '',
+  teacherId: 'ddddddd',
   removedAt: { $exists: false },
 };
+service.find({ query: {} });
