@@ -114,7 +114,7 @@ class App extends Component {
       const response = await feathersClient.authenticate({
         strategy: 'facebookTokenTeacher',
         access_token:
-          'EAADWZA0P77j0BAGoM3vaXUQc6BIqlyEz9aKt5lHzPYtGGdZAqklRZCGQjORo8MJbmUAGDRdJhp9Tsp7cZAfZB0UwQZBXpgtGcnRGpb2WdqDheNoR0ZBRGatnoV0M90DIzKSqjtGZBNKHXvZCtWStvSJkgBkUyUlCcFWDlTuRcZBXi5x75iMMRf94jTSnIP7VZCXBF1zsL13XQXfc6IltpmDdLt6orlj8SZABMZCIZD',
+          'EAADWZA0P77j0BAAgr5FuSZBLrFDr6DE5Mw6vpATEuEXvWOhe6ZChUeHr5uJLBk2DitSPiR74nhapdheX6BUkQMNbeZAVcladzgSVZByeNKlfJezVug6LFp4IBzUZAv2kRoQHf2ufDRZBZBAnYZCYVuLZC6oYpgfiHz5Nbj15tyr1O5djtHAo5PhkaUgAZBgYZBCxJcLsghPZA9ahnmGlnAV90guNHAuVwLXkXzskZD',
         platform: 'teacher',
       });
 
