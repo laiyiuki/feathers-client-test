@@ -17,6 +17,14 @@ const AuthByPassword = async (phone, password, platform) => {
   });
 };
 
+const AuthByFacebook = async access_token => {
+  return await feathersClient.authenticate({
+    strategy: 'facebookTokenTeacher',
+    access_token,
+    platform: 'teacher',
+  });
+};
+
 const UserService = feathersClient.service('users');
 const TeacherService = feathersClient.service('teachers');
 const CourseAdService = feathersClient.service('course-ads');
@@ -24,6 +32,7 @@ const CourseAdService = feathersClient.service('course-ads');
 export {
   feathersClient,
   AuthByJWT,
+  AuthByFacebook,
   AuthByPassword,
   UserService,
   TeacherService,

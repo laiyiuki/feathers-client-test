@@ -106,6 +106,11 @@ class App extends Component {
 
   async componentDidMount() {
     try {
+      // const user = await feathersClient.service('users').create({
+      //   email: '123',
+      //   password: '1234',
+      // });
+
       const response = await feathersClient.authenticate({
         strategy: 'facebookTokenTeacher',
         access_token:
@@ -114,28 +119,28 @@ class App extends Component {
       });
 
       // const response = await AuthByJWT();
-      // this.setState({
-      //   profile: response.profile,
-      // });
-      //
-      // console.log('authenticated', response);
+      this.setState({
+        profile: response.profile,
+      });
+
+      console.log('authenticated', response);
     } catch (err) {
       console.log('authentication error', err);
     }
 
     // Handle Auto reauthenticate when socket re-connected
-    // feathersClient.on('reauthentication-error', async err => {
-    //   console.log('reauthentication-error', err);
-    //   try {
-    //     const response = await AuthByJWT();
-    //     this.setState({
-    //       profile: response.profile,
-    //     });
-    //     console.log('re-authenticated', response);
-    //   } catch (err) {
-    //     console.log('authentication error', err);
-    //   }
-    // });
+    feathersClient.on('reauthentication-error', async err => {
+      console.log('reauthentication-error', err);
+      try {
+        const response = await AuthByJWT();
+        this.setState({
+          profile: response.profile,
+        });
+        console.log('re-authenticated', response);
+      } catch (err) {
+        console.log('authentication error', err);
+      }
+    });
   }
 
   signUp = async () => {
