@@ -13,7 +13,7 @@ import {
 
 import {
   phoneSignUp,
-  // verifyPhone,
+  verifyPhone,
   teacherSignUpByPhone,
   // getUser,
   // modifyUser,
@@ -32,6 +32,16 @@ const axios = require('axios');
 const HOST = 'http://localhost:3030';
 
 //
+async function test() {
+  try {
+    const res = await phoneSignUp('96344902', '852');
+    console.log('test', res);
+  } catch (err) {
+    console.log('test', err);
+  }
+}
+// test();
+
 ////
 ///
 /////
@@ -89,6 +99,22 @@ const generateTimeTable = timeslots => {
   return [...new Set(timeTable)].sort((a, b) => a - b);
 };
 
+//
+//
+//
+const isTimeOverlapped = (timeslot, timeTable) => {
+  const table = convertTimeslotToTable(timeslot);
+  for (let slot of table) {
+    if (timeTable.indexOf(slot) !== -1) {
+      return true;
+    }
+  }
+  return false;
+};
+//
+//
+//
+//
 let time = [
   {
     days: [1, 2],
@@ -96,13 +122,20 @@ let time = [
     endTime: '01:00',
   },
   {
-    days: [2],
+    days: [2, 5],
     startTime: '00:30',
     endTime: '01:30',
   },
 ];
+const timeTable = generateTimeTable(time);
+console.log('timeTable: ', timeTable);
+const newSlot = {
+  days: [3],
+  startTime: '00:00',
+  endTime: '00:15',
+};
 
-console.log('timeTable: ', generateTimeTable(time));
+console.log('isTimeOverlapped', isTimeOverlapped(newSlot, timeTable));
 // (async function() {
 //   console.log('phoneSignUp', await phoneSignUp('85296344902', '852'));
 // })();
@@ -174,23 +207,26 @@ class App extends Component {
     password: '1234',
     profile: {},
     courseAdId: '',
+    token: 'JIbkNdtCqF',
+    tokenId: '5b603a6ba899dc134dd38bb8',
   };
 
   async componentDidMount() {
     try {
+      // test();
       // const user = await feathersClient.service('users').create({
       //   email: '123',
       //   password: '1234',
       // });
 
-      const response = await feathersClient.authenticate({
-        strategy: 'facebookTokenTeacher',
-        access_token:
-          'EAADWZA0P77j0BAAgr5FuSZBLrFDr6DE5Mw6vpATEuEXvWOhe6ZChUeHr5uJLBk2DitSPiR74nhapdheX6BUkQMNbeZAVcladzgSVZByeNKlfJezVug6LFp4IBzUZAv2kRoQHf2ufDRZBZBAnYZCYVuLZC6oYpgfiHz5Nbj15tyr1O5djtHAo5PhkaUgAZBgYZBCxJcLsghPZA9ahnmGlnAV90guNHAuVwLXkXzskZD',
-        platform: 'teacher',
-      });
+      // const response = await feathersClient.authenticate({
+      //   strategy: 'facebookTokenTeacher',
+      //   access_token:
+      //     'EAADWZA0P77j0BAAgr5FuSZBLrFDr6DE5Mw6vpATEuEXvWOhe6ZChUeHr5uJLBk2DitSPiR74nhapdheX6BUkQMNbeZAVcladzgSVZByeNKlfJezVug6LFp4IBzUZAv2kRoQHf2ufDRZBZBAnYZCYVuLZC6oYpgfiHz5Nbj15tyr1O5djtHAo5PhkaUgAZBgYZBCxJcLsghPZA9ahnmGlnAV90guNHAuVwLXkXzskZD',
+      //   platform: 'teacher',
+      // });
 
-      // const response = await AuthByJWT();
+      const response = await AuthByJWT();
       this.setState({
         profile: response.profile,
       });
@@ -217,13 +253,22 @@ class App extends Component {
 
   signUp = async () => {
     try {
-      const { phoneNumber, countryCode, name, password } = this.state;
+      const {
+        token,
+        tokenId,
+        phoneNumber,
+        countryCode,
+        name,
+        password,
+      } = this.state;
       feathersClient.logout();
       const user = await teacherSignUpByPhone({
         phoneNumber,
         countryCode,
         name,
         password,
+        token,
+        tokenId,
       });
 
       const response = await AuthByPassword(user.phone, password, 'teacher');
@@ -320,6 +365,21 @@ class App extends Component {
     }
   };
 
+  verifyToken = async () => {
+    try {
+      const { data } = await verifyPhone('96344902', '852', '0200');
+      console.log('verify', data);
+      if (data.data.success) {
+        this.setState({
+          token: data.data.token,
+          tokenId: data.data.tokenId,
+        });
+      }
+    } catch (err) {
+      console.log('verifyToken err', err);
+    }
+  };
+
   render() {
     return (
       <div className="App">
@@ -367,7 +427,6 @@ class App extends Component {
             Sign Up
           </button>
         </form>
-
         <br />
         <hr />
         <h3>Log In</h3>
@@ -442,6 +501,15 @@ class App extends Component {
           style={{ cursor: 'pointer' }}
         >
           Update Ad
+        </button>
+        <br />
+        <br />
+        <button
+          onClick={() => this.verifyToken()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Verify phone
         </button>
         <br />
       </div>

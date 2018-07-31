@@ -30,3 +30,13 @@ const generateTimeTable = timeslots => {
 
   return [...new Set(timeTable)].sort((a, b) => a - b);
 };
+
+const isTimeOverlapped = (timeslot, timeTable) => {
+  const table = convertTimeslotToTable(timeslot);
+  for (let slot of table) {
+    if (timeTable.indexOf(slot) !== -1) {
+      return true;
+    }
+  }
+  return false;
+};
