@@ -367,12 +367,12 @@ class App extends Component {
 
   verifyToken = async () => {
     try {
-      const { data } = await verifyPhone('96344902', '852', '0200');
+      const { data } = await verifyPhone('96344902', '852', '5718');
       console.log('verify', data);
-      if (data.data.success) {
+      if (data.success) {
         this.setState({
-          token: data.data.token,
-          tokenId: data.data.tokenId,
+          token: data.token,
+          tokenId: data.tokenId,
         });
       }
     } catch (err) {
