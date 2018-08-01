@@ -88,7 +88,7 @@ async function getUser(userId) {
  * @return {object}        Modified user
  */
 async function modifyUser(userId, data, flag) {
-  let params = undefined;
+  let params;
   if (flag) {
     params = paramsForServer(flag);
   }
@@ -96,6 +96,19 @@ async function modifyUser(userId, data, flag) {
   return UserService.patch(userId, data, params);
 }
 
+// async function updatePhone() {
+//   const user = await UserService.patch(
+//     userId,
+//     {
+//       countryCode: '',
+//       phoneNumber: '',
+//       password: '',
+//       token: '',
+//     },
+//     paramsForServer({ action: 'reset-password' }),
+//   );
+//   return user;
+// }
 /**
  * [getTeacherProfile description]
  * @param  {string} teacherId

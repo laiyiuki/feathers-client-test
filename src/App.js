@@ -34,8 +34,13 @@ const HOST = 'http://localhost:3030';
 //
 async function test() {
   try {
-    const res = await phoneSignUp('96344902', '852');
-    console.log('test', res);
+    // const res = await feathersClient.service('versions').create({
+    //   platform: 'student',
+    //   minimum: '0.0.1',
+    //   latest: '1.0.1',
+    // });
+    // const res = await phoneSignUp('96344902', '852');
+    // console.log('test', res);
   } catch (err) {
     console.log('test', err);
   }
@@ -367,12 +372,12 @@ class App extends Component {
 
   verifyToken = async () => {
     try {
-      const { data } = await verifyPhone('96344902', '852', '5718');
+      const { data } = await verifyPhone('96344902', '852', '1494');
       console.log('verify', data);
       if (data.success) {
         this.setState({
           token: data.token,
-          tokenId: data.tokenId,
+          // tokenId: data.tokenId,
         });
       }
     } catch (err) {
