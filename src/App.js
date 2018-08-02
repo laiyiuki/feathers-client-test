@@ -39,8 +39,8 @@ async function test() {
     //   minimum: '0.0.1',
     //   latest: '1.0.1',
     // });
-    // const res = await phoneSignUp('96344902', '852');
-    // console.log('test', res);
+    const res = await phoneSignUp('96344902', '852');
+    console.log('test', res);
   } catch (err) {
     console.log('test', err);
   }
@@ -372,7 +372,7 @@ class App extends Component {
 
   verifyToken = async () => {
     try {
-      const { data } = await verifyPhone('96344902', '852', '1494');
+      const { data } = await verifyPhone('96344902', '852', '5495');
       console.log('verify', data);
       if (data.success) {
         this.setState({
@@ -380,6 +380,41 @@ class App extends Component {
           // tokenId: data.tokenId,
         });
       }
+    } catch (err) {
+      console.log('verifyToken err', err);
+    }
+  };
+
+  findAllCourse = async () => {
+    try {
+      const { data } = await feathersClient.service('course-ads').find({
+        query: {
+          removedAt: { $exists: false },
+          onlineAt: { $exists: true },
+          title: '',
+          category: '',
+          level: '',
+          experience: { $gte: 1 },
+          fee: { $lte: 200 },
+          timeTable: { $in: perferredTimeTable },
+          location: {
+            geo: {
+              $near: {
+                $geometry: {
+                  type: 'Point',
+                  coordinates: [parseFloat(longitude), parseFloat(latitude)],
+                },
+                $minDistance: 0,
+                $maxDistance: parseFloat(distance) * 1000,
+              },
+            },
+          },
+          $limit: 25,
+          $skip: 0,
+          $sort: { fee: 1 },
+        },
+      });
+      console.log('couse', data);
     } catch (err) {
       console.log('verifyToken err', err);
     }
@@ -515,6 +550,17 @@ class App extends Component {
           style={{ cursor: 'pointer' }}
         >
           Verify phone
+        </button>
+        <br />
+
+        <br />
+        <br />
+        <button
+          onClick={() => this.findAllCourse()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          find all course
         </button>
         <br />
       </div>
