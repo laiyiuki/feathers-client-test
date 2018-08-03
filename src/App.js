@@ -25,8 +25,20 @@ import {
   findCourseAds,
 } from './controllers';
 
+import seed from './query/seed';
+
 import { paramsForServer } from 'feathers-hooks-common';
 const axios = require('axios');
+
+const seedData = async () => {
+  try {
+    const res = await feathersClient.service('course-ads').create(seed);
+    console.log('seed response', res);
+  } catch (err) {
+    console.log('seed err', err);
+  }
+};
+seedData();
 
 // const HOST = 'https://quiet-garden-63699.herokuapp.com';
 const HOST = 'http://localhost:3030';
@@ -372,7 +384,7 @@ class App extends Component {
 
   verifyToken = async () => {
     try {
-      const { data } = await verifyPhone('96344902', '852', '5495');
+      const { data } = await verifyPhone('96344902', '852', '6867');
       console.log('verify', data);
       if (data.success) {
         this.setState({
@@ -389,31 +401,53 @@ class App extends Component {
     try {
       const { data } = await feathersClient.service('course-ads').find({
         query: {
-          removedAt: { $exists: false },
-          onlineAt: { $exists: true },
-          title: '',
-          category: '',
-          level: '',
-          experience: { $gte: 1 },
-          fee: { $lte: 200 },
-          timeTable: { $in: perferredTimeTable },
-          location: {
-            geo: {
-              $near: {
-                $geometry: {
-                  type: 'Point',
-                  coordinates: [parseFloat(longitude), parseFloat(latitude)],
-                },
-                $minDistance: 0,
-                $maxDistance: parseFloat(distance) * 1000,
+          category: 'English',
+          level: 1,
+          fee: { $lte: 300 },
+          'location.geo': {
+            $near: {
+              $geometry: {
+                type: 'Point',
+                coordinates: [114.15891699999997, 22.2849],
               },
+              $minDistance: 0,
+              $maxDistance: parseFloat(2) * 1000,
             },
           },
-          $limit: 25,
-          $skip: 0,
-          $sort: { fee: 1 },
+          // $limit: 25,
+          // $skip: 0,
+          // $sort: { fee: 1 },
         },
       });
+
+      // const { data } = await feathersClient.service('course-ads').find({
+      // query: {
+      // removedAt: { $exists: false },
+      // onlineAt: { $exists: true },
+      // title: '',
+      // category: '',
+      // level: '',
+      // experience: { $gte: 1 },
+      // fee: { $lte: 200 },
+      // timeTable: { $in: perferredTimeTable },
+      // location: {
+      //   geo: {
+      //     $near: {
+      //       $geometry: {
+      //         type: 'Point',
+      //         coordinates: [parseFloat(longitude), parseFloat(latitude)],
+      //       },
+      //       $minDistance: 0,
+      //       $maxDistance: parseFloat(distance) * 1000,
+      //     },
+      //   },
+      // },
+      // $limit: 25,
+      // $skip: 0,
+      // $sort: { fee: 1 },
+      // },
+      // });
+      // });
       console.log('couse', data);
     } catch (err) {
       console.log('verifyToken err', err);
