@@ -28,17 +28,21 @@ import {
 import seed from './query/seed';
 
 import { paramsForServer } from 'feathers-hooks-common';
-const axios = require('axios');
+import axios from 'axios';
 
-const seedData = async () => {
-  try {
-    const res = await feathersClient.service('course-ads').create(seed);
-    console.log('seed response', res);
-  } catch (err) {
-    console.log('seed err', err);
-  }
-};
-seedData();
+import { fetchAllBookmarkedCourseAds } from './controllers/bookmarks';
+
+// import { saveCourseAds } from './controllers/bookmarks';
+
+// const seedData = async () => {
+//   try {
+//     const res = await feathersClient.service('course-ads').create(seed);
+//     console.log('seed response', res);
+//   } catch (err) {
+//     console.log('seed err', err);
+//   }
+// };
+// seedData();
 
 // const HOST = 'https://quiet-garden-63699.herokuapp.com';
 const HOST = 'http://localhost:3030';
@@ -69,12 +73,22 @@ const convertTimeslotToTable = timeslot => {
   const endMinute = parseInt(timeslot.endTime.split(':')[1]);
 
   const start = startHour * 4 + startMinute / 15 + 1;
-  const end = endHour * 4 + endMinute / 15 + 1;
+  // const end = endHour * 4 + endMinute / 15 + 1;
+  let end;
+  if (endHour === 0 && endMinute === 0) {
+    end = 24 * 4;
+  } else {
+    end = endHour * 4 + endMinute / 15 + 1;
+  }
 
   let table = [];
   for (let day of timeslot.days) {
     let startRange = start + (day - 1) * 24 * 4;
-    const endRange = end + (day - 1) * 24 * 4;
+    let endRange = end + (day - 1) * 24 * 4;
+
+    if (end === 24 * 4) {
+      endRange = endRange + 1;
+    }
 
     while (startRange < endRange) {
       table.push(startRange);
@@ -133,19 +147,27 @@ const isTimeOverlapped = (timeslot, timeTable) => {
 //
 //
 let time = [
+  // {
+  //   days: [1, 2, 3, 4, 5, 6, 7],
+  //   startTime: '00:00',
+  //   endTime: '00:00',
+  // },
   {
-    days: [1, 2],
+    days: [1],
     startTime: '00:00',
-    endTime: '01:00',
+    endTime: '00:00',
   },
-  {
-    days: [2, 5],
-    startTime: '00:30',
-    endTime: '01:30',
-  },
+  // {
+  //   days: [1, 2],
+  //   startTime: '00:30',
+  //   endTime: '01:30',
+  // },
 ];
 const timeTable = generateTimeTable(time);
+console.log('timeTable', timeTable);
+
 console.log('timeTable: ', timeTable);
+
 const newSlot = {
   days: [3],
   startTime: '00:00',
@@ -253,6 +275,19 @@ class App extends Component {
       console.log('authentication error', err);
     }
 
+    // const bookmark = async () => {
+    //   try {
+    //     const result = await saveCourseAds(
+    //       '5b63f0be7d2b36a85ddac418',
+    //       '5b67ccc6287271afcbf57a21',
+    //     );
+    //     console.log('bookmarks', result);
+    //   } catch (err) {
+    //     console.log('bookmarks', err);
+    //   }
+    // };
+    // bookmark();
+
     // Handle Auto reauthenticate when socket re-connected
     feathersClient.on('reauthentication-error', async err => {
       console.log('reauthentication-error', err);
@@ -303,7 +338,7 @@ class App extends Component {
   login = async () => {
     const { phone, password } = this.state;
     try {
-      const response = await AuthByPassword(phone, password, 'teacher');
+      const response = await AuthByPassword(phone, password, 'student');
       this.setState({
         profile: response.profile,
       });
@@ -414,43 +449,29 @@ class App extends Component {
               $maxDistance: parseFloat(2) * 1000,
             },
           },
-          // $limit: 25,
-          // $skip: 0,
-          // $sort: { fee: 1 },
+          $limit: 20,
+          $skip: 0,
+          $sort: { fee: 1 },
         },
       });
 
-      // const { data } = await feathersClient.service('course-ads').find({
-      // query: {
-      // removedAt: { $exists: false },
-      // onlineAt: { $exists: true },
-      // title: '',
-      // category: '',
-      // level: '',
-      // experience: { $gte: 1 },
-      // fee: { $lte: 200 },
-      // timeTable: { $in: perferredTimeTable },
-      // location: {
-      //   geo: {
-      //     $near: {
-      //       $geometry: {
-      //         type: 'Point',
-      //         coordinates: [parseFloat(longitude), parseFloat(latitude)],
-      //       },
-      //       $minDistance: 0,
-      //       $maxDistance: parseFloat(distance) * 1000,
-      //     },
-      //   },
-      // },
-      // $limit: 25,
-      // $skip: 0,
-      // $sort: { fee: 1 },
-      // },
-      // });
-      // });
-      console.log('couse', data);
+      console.log('couses', data);
     } catch (err) {
-      console.log('verifyToken err', err);
+      console.log('find course err', err);
+    }
+  };
+
+  myBookmarked = async () => {
+    try {
+      const bookmarks = [
+        '5b67ccc6287271afcbf57a21',
+        '5b67ccc5287271afcbf57a20',
+      ];
+
+      const res = await fetchAllBookmarkedCourseAds(bookmarks);
+      console.log('all bookmarked', res);
+    } catch (err) {
+      console.log('bookmark err', err);
     }
   };
 
@@ -595,6 +616,16 @@ class App extends Component {
           style={{ cursor: 'pointer' }}
         >
           find all course
+        </button>
+        <br />
+
+        <br />
+        <button
+          onClick={() => this.myBookmarked()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Fetch my bookmarked Course Ads
         </button>
         <br />
       </div>

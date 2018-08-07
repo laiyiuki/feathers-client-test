@@ -5,12 +5,22 @@ const convertTimeslotToTable = timeslot => {
   const endMinute = parseInt(timeslot.endTime.split(':')[1]);
 
   const start = startHour * 4 + startMinute / 15 + 1;
-  const end = endHour * 4 + endMinute / 15 + 1;
+  // const end = endHour * 4 + endMinute / 15 + 1;
+  let end;
+  if (endHour === 0 && endMinute === 0) {
+    end = 24 * 4;
+  } else {
+    end = endHour * 4 + endMinute / 15 + 1;
+  }
 
   let table = [];
   for (let day of timeslot.days) {
     let startRange = start + (day - 1) * 24 * 4;
-    const endRange = end + (day - 1) * 24 * 4;
+    let endRange = end + (day - 1) * 24 * 4;
+
+    if (end === 24 * 4) {
+      endRange = endRange + 1;
+    }
 
     while (startRange < endRange) {
       table.push(startRange);
