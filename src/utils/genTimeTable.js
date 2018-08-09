@@ -4,13 +4,13 @@ const convertTimeslotToTable = timeslot => {
   const endHour = parseInt(timeslot.endTime.split(':')[0]);
   const endMinute = parseInt(timeslot.endTime.split(':')[1]);
 
-  const start = startHour * 4 + startMinute / 15 + 1;
-  // const end = endHour * 4 + endMinute / 15 + 1;
+  const start = startHour * 4 + startMinute / 15;
+
   let end;
   if (endHour === 0 && endMinute === 0) {
     end = 24 * 4;
   } else {
-    end = endHour * 4 + endMinute / 15 + 1;
+    end = endHour * 4 + endMinute / 15;
   }
 
   let table = [];
@@ -18,12 +18,8 @@ const convertTimeslotToTable = timeslot => {
     let startRange = start + (day - 1) * 24 * 4;
     let endRange = end + (day - 1) * 24 * 4;
 
-    if (end === 24 * 4) {
-      endRange = endRange + 1;
-    }
-
     while (startRange < endRange) {
-      table.push(startRange);
+      table.push(startRange + 1);
       startRange++;
     }
   }
