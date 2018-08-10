@@ -87,7 +87,7 @@ const convertTimeslotToTable = timeslot => {
     let endRange = end + (day - 1) * 24 * 4;
 
     while (startRange < endRange) {
-      table.push(startRange+1);
+      table.push(startRange + 1);
       startRange++;
     }
   }
@@ -149,7 +149,7 @@ let time = [
   //   endTime: '00:00',
   // },
   {
-    days: [1,2],
+    days: [1, 2],
     startTime: '00:00',
     endTime: '23:45',
   },
@@ -435,16 +435,16 @@ class App extends Component {
           category: 'English',
           level: 1,
           fee: { $lte: 300 },
-          'location.geo': {
-            $near: {
-              $geometry: {
-                type: 'Point',
-                coordinates: [114.15891699999997, 22.2849],
-              },
-              $minDistance: 0,
-              $maxDistance: parseFloat(2) * 1000,
-            },
-          },
+          // 'location.geo': {
+          //   $near: {
+          //     $geometry: {
+          //       type: 'Point',
+          //       coordinates: [114.15891699999997, 22.2849],
+          //     },
+          //     $minDistance: 0,
+          //     $maxDistance: parseFloat(2) * 1000,
+          //   },
+          // },
           $limit: 20,
           $skip: 0,
           $sort: { fee: 1 },
@@ -468,6 +468,17 @@ class App extends Component {
       console.log('all bookmarked', res);
     } catch (err) {
       console.log('bookmark err', err);
+    }
+  };
+
+  applyCourse = async () => {
+    try {
+      const res = await feathersClient.service('matches').create({
+        courseAdId: '5b6bcc9187fe47cfef7b9c3c',
+      });
+      console.log('apply course', res);
+    } catch (err) {
+      console.log('apply course err', err);
     }
   };
 
@@ -623,6 +634,17 @@ class App extends Component {
         >
           Fetch my bookmarked Course Ads
         </button>
+        <br />
+
+        <br />
+        <button
+          onClick={() => this.applyCourse()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Apply Course
+        </button>
+        <br />
         <br />
       </div>
     );
