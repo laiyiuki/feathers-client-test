@@ -248,6 +248,12 @@ class App extends Component {
 
   async componentDidMount() {
     try {
+      feathersClient.on('authenticated', () => {
+        console.log('authenticated event ');
+      });
+      feathersClient
+        .service('course-ads')
+        .on('created', () => console.log('created'));
       // test();
       // const user = await feathersClient.service('users').create({
       //   email: '123',
@@ -435,16 +441,16 @@ class App extends Component {
           category: 'English',
           level: 1,
           fee: { $lte: 300 },
-          // 'location.geo': {
-          //   $near: {
-          //     $geometry: {
-          //       type: 'Point',
-          //       coordinates: [114.15891699999997, 22.2849],
-          //     },
-          //     $minDistance: 0,
-          //     $maxDistance: parseFloat(2) * 1000,
-          //   },
-          // },
+          'location.geo': {
+            $near: {
+              $geometry: {
+                type: 'Point',
+                coordinates: [114.15891699999997, 22.2849],
+              },
+              $minDistance: 0,
+              $maxDistance: parseFloat(2) * 1000,
+            },
+          },
           $limit: 20,
           $skip: 0,
           $sort: { fee: 1 },

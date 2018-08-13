@@ -21,7 +21,7 @@ const AuthByFacebook = async access_token => {
   return await feathersClient.authenticate({
     strategy: 'facebookTokenTeacher',
     access_token,
-    platform: 'teacher',
+    platform: 'student',
   });
 };
 
