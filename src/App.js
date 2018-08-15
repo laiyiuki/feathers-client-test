@@ -251,9 +251,10 @@ class App extends Component {
       feathersClient.on('authenticated', () => {
         console.log('authenticated event ');
       });
+
       feathersClient
-        .service('course-ads')
-        .on('created', () => console.log('created'));
+        .service('matchings')
+        .on('created', data => console.log('created', data));
       // test();
       // const user = await feathersClient.service('users').create({
       //   email: '123',
@@ -479,7 +480,7 @@ class App extends Component {
 
   applyCourse = async () => {
     try {
-      const res = await feathersClient.service('matches').create({
+      const res = await feathersClient.service('matchings').create({
         courseAdId: '5b6bcc9187fe47cfef7b9c3c',
       });
       console.log('apply course', res);

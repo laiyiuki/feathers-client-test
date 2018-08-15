@@ -5,20 +5,20 @@ import { feathersClient } from '../services';
 // Student Apply
 //
 export const applyCourse = async courseAdId => {
-  return feathersClient.service('matches').create({
+  return feathersClient.service('matchings').create({
     courseAdId,
   });
 };
 
-export const fetchAllMatchesByStudentId = async studentId => {
-  return feathersClient.service('matches').find({
+export const fetchAllmatchingsByStudentId = async studentId => {
+  return feathersClient.service('matchings').find({
     query: {
       studentId,
       archiveAt: { $exists: false },
       removedAt: { $exists: false },
       $limit: 5,
       $skip: 0,
-      $sort: { 'messages[0].createAd': -1 },
+      // $sort: { 'activityLogs[0].createAd': -1 },
     },
   });
 };
@@ -26,21 +26,21 @@ export const fetchAllMatchesByStudentId = async studentId => {
 //
 // Eeacher Apply
 //
-export const fetchAllMatchesByTeacherId = async teacherId => {
-  return feathersClient.service('matches').find({
+export const fetchAllmatchingsByTeacherId = async teacherId => {
+  return feathersClient.service('matchings').find({
     query: {
       teacherId,
       archiveAt: { $exists: false },
       removedAt: { $exists: false },
       $limit: 5,
       $skip: 0,
-      $sort: { 'messages[0].createAd': -1 },
+      // $sort: { 'activityLogs[0].createAd': -1 },
     },
   });
 };
 
 export const connectWithStudent = async studentAdId => {
-  return feathersClient.service('matches').create({
+  return feathersClient.service('matchings').create({
     studentAdId,
   });
 };
