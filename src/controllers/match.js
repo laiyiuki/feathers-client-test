@@ -7,6 +7,20 @@ import { feathersClient } from '../services';
 export const applyCourse = async courseAdId => {
   return feathersClient.service('matchings').create({
     courseAdId,
+    studentHeadline: '',
+    teacherHeadline: '',
+    title: '',
+    category: '',
+    level: '',
+    timeslots: [],
+    timeTable: [],
+    location: {},
+    duration: 60,
+    homeTuition: true,
+    startDate: new Date(),
+    numOfStudents: 1
+    noSmoking: false,
+    requireQualificationProof: true,
   });
 };
 
@@ -42,5 +56,18 @@ export const fetchAllmatchingsByTeacherId = async teacherId => {
 export const connectWithStudent = async studentAdId => {
   return feathersClient.service('matchings').create({
     studentAdId,
+    teacherHeadline: '',
+    title: '',
+    category: '',
+    level: '',
+    timeslots: [],
+    timeTable: [],
+    location: {},
+    duration: 60,
+    homeTuition: true,
+    startDate: new Date(),
+    numOfStudents: 1
+    noSmoking: false,
+    requireQualificationProof: true,
   });
 };
