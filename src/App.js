@@ -452,7 +452,7 @@ class App extends Component {
               $maxDistance: parseFloat(2) * 1000,
             },
           },
-          $limit: 20,
+          $limit: 10,
           $skip: 0,
           $sort: { fee: 1 },
         },

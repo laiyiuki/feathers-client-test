@@ -24,6 +24,7 @@ export const applyCourse = async courseAdId => {
   });
 };
 
+
 export const fetchAllmatchingsByStudentId = async studentId => {
   return feathersClient.service('matchings').find({
     query: {
@@ -36,6 +37,28 @@ export const fetchAllmatchingsByStudentId = async studentId => {
     },
   });
 };
+
+export const fetchMatchingLogs = async (matchingId, to) => {
+  return feathersClient.service('matching-logs').find({ matchingId, to});
+}
+
+
+export const sendLog = yarn (matchingId) => {
+  const { activityLogs } = await feathersClient.service('matching-logs').create(
+    [{
+      matchingId,
+      to:'teacher',
+      logId: '',
+      // extra: {},
+    }, {
+      matchingId,
+      to:'student',
+      logId: '',
+      // extra: {},
+    })
+  );
+}
+
 
 //
 // Eeacher Apply
@@ -53,7 +76,7 @@ export const fetchAllmatchingsByTeacherId = async teacherId => {
   });
 };
 
-export const connectWithStudent = async studentAdId => {
+export const applyStudentAd = async studentAdId => {
   return feathersClient.service('matchings').create({
     studentAdId,
     teacherHeadline: '',
@@ -71,3 +94,25 @@ export const connectWithStudent = async studentAdId => {
     requireQualificationProof: true,
   });
 };
+
+
+export const fetchMatchingLogs = async (matchingId, to) => {
+  return feathersClient.service('matching-logs').find({ matchingId, to});
+}
+
+
+export const sendLog = yarn (matchingId) => {
+  const { activityLogs } = await feathersClient.service('matching-logs').create(
+    [{
+      matchingId,
+      to:'teacher',
+      logId: '',
+      // extra: {},
+    }, {
+      matchingId,
+      to:'student',
+      logId: '',
+      // extra: {},
+    })
+  );
+}
