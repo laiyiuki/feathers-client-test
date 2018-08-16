@@ -41,7 +41,11 @@ export const fetchAllmatchingsByStudentId = async studentId => {
 
 
 export const fetchMatchingLogs = async (matchingId, to) => {
-  return feathersClient.service('matching-logs').find({ matchingId, to});
+  return feathersClient.service('matching-logs').find({
+    query: { 
+      matchingId, to
+    },
+  });
 }
 
 export const archiveMatching = async (matchingId) => {
@@ -113,7 +117,11 @@ export const applyStudentAd = async studentAdId => {
 
 
 export const fetchMatchingLogs = async (matchingId, to) => {
-  return feathersClient.service('matching-logs').find({ matchingId, to});
+  return feathersClient.service('matching-logs').find({ 
+    query: { 
+      matchingId, to
+    },
+  });
 }
 
 
