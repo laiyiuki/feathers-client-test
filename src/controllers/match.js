@@ -59,7 +59,16 @@ export const sendLog = yarn (matchingId) => {
   );
 }
 
-
+export const archiveMatching = async (matchingId) => {
+  return feathersClient.service('matching-logs').patch({ matchingId, archiveAt: new Date() });
+}
+//
+//
+//
+//
+//
+//
+//
 //
 // Eeacher Apply
 //
