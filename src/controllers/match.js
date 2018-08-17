@@ -25,12 +25,11 @@ export const applyCourse = async courseAdId => {
   });
 };
 
-
 export const fetchAllmatchingsByStudentId = async studentId => {
   return feathersClient.service('matchings').find({
     query: {
       studentId,
-      archiveAt: { $exists: false },
+      archivedAt: { $exists: false },
       removedAt: { $exists: false },
       $limit: 5,
       $skip: 0,
@@ -39,72 +38,67 @@ export const fetchAllmatchingsByStudentId = async studentId => {
   });
 };
 
-
 export const fetchMatchingLogs = async (matchingId, to) => {
   return feathersClient.service('matching-logs').find({
     query: {
       matchingId,
-      to
-    }
+      to,
+    },
   });
-}
+};
 
-export const archiveMatching = async (matchingId) => {
-  return feathersClient.service('matching-logs').patch(
-    matchingId,
-    { archiveAt: new Date() }
-  );
-}
+export const archiveMatching = async matchingId => {
+  return feathersClient
+    .service('matching-logs')
+    .patch(matchingId, { archivedAt: new Date() });
+};
 
-export const fetchMatchingBy = async (matchingId) => {
-  return feathersClient.service('matching-logs').patch(
-    matchingId,
-    { archiveAt: new Date() }
-  );
-}
+export const fetchMatchingBy = async matchingId => {
+  return feathersClient
+    .service('matching-logs')
+    .patch(matchingId, { archivedAt: new Date() });
+};
 
 //
-export const sendLog = async (matchingId) => {
- return feathersClient.service('matching-logs').create({
+export const sendLog = async matchingId => {
+  return feathersClient.service('matching-logs').create({
     matchingId,
-    to:'teacher',
+    to: 'teacher',
     logId: '',
     // extra: {},
   });
-}
+};
 
-
-export const updateLog = async (matchingLogId) => {
-  return feathersClient.service('matching-logs').patch(
-    matchingLogId,
-    { extra: {} }
-  );
-}
-
-// export const setLogsAsRead = async (matchingId, to) => {
-//   return feathersClient.service('matching-logs').patch(
-//     null,
-//     { read: new Date() },
-//     paramsForServer({
-//       query: {
-//         matchingId,
-//         to,
-//       },
-//       paginate: false,
-//     })
-//   );
-// }
-
+export const updateLog = async matchingLogId => {
+  return feathersClient
+    .service('matching-logs')
+    .patch(matchingLogId, { extra: {} });
+};
 
 export const setLogsAsRead = async (matchingId, to) => {
-  return feathersClient.service('matchings').patch(
-    matchingId,
-    { to },
+  return feathersClient.service('matching-logs').patch(
+    null,
+    { read: new Date() },
     paramsForServer({
-      action: 'set-logs-as-read'
-    })
+      query: {
+        matchingId,
+        to,
+        read: { $exists: false },
+      },
+      action: 'read',
+    }),
   );
-}
+};
+
+// export const setLogsAsRead = async (matchingId, to) => {
+//   return feathersClient.service('matchings').patch(
+//     matchingId,
+//     { to },
+//     paramsForServer({
+//       action: 'set-logs-as-read',
+//     }),
+//   );
+// };
 
 //
 //
@@ -122,7 +116,7 @@ export const fetchAllmatchingsByTeacherId = async teacherId => {
   return feathersClient.service('matchings').find({
     query: {
       teacherId,
-      archiveAt: { $exists: false },
+      archivedAt: { $exists: false },
       removedAt: { $exists: false },
       $limit: 5,
       $skip: 0,
@@ -151,22 +145,20 @@ export const applyStudentAd = async studentAdId => {
   });
 };
 
-
-export const fetchMatchingLogs = async (matchingId, to) => {
-  return feathersClient.service('matching-logs').find({
-    query: {
-      matchingId,
-      to
-    }
-  });
-}
-
-
-export const sendLog = yarn (matchingId) => {
-  return feathersClient.service('matching-logs').create({
-    matchingId,
-    to:'teacher',
-    logId: '',
-    // extra: {},
-  });
-}
+// export const fetchMatchingLogs = async (matchingId, to) => {
+//   return feathersClient.service('matching-logs').find({
+//     query: {
+//       matchingId,
+//       to
+//     }
+//   });
+// }
+//
+// export const sendLog = yarn (matchingId) => {
+//   return feathersClient.service('matching-logs').create({
+//     matchingId,
+//     to:'teacher',
+//     logId: '',
+//     // extra: {},
+//   });
+// }

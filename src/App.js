@@ -32,6 +32,8 @@ import axios from 'axios';
 
 import { fetchAllBookmarkedCourseAds } from './controllers/bookmarks';
 
+import { setLogsAsRead } from './controllers/match';
+
 // import { saveCourseAds } from './controllers/bookmarks';
 
 // const seedData = async () => {
@@ -489,6 +491,15 @@ class App extends Component {
     }
   };
 
+  read = async () => {
+    try {
+      const res = await setLogsAsRead('5b754d6270920b16cafd4c4c', 'teacher');
+      console.log('read logs', res);
+    } catch (err) {
+      console.log('read logs err', err);
+    }
+  };
+
   render() {
     return (
       <div className="App">
@@ -650,6 +661,17 @@ class App extends Component {
           style={{ cursor: 'pointer' }}
         >
           Apply Course
+        </button>
+        <br />
+        <br />
+
+        <br />
+        <button
+          onClick={() => this.read()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Read Logs
         </button>
         <br />
         <br />
