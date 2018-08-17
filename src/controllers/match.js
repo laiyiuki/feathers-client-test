@@ -30,7 +30,7 @@ export const fetchAllmatchingsByStudentId = async studentId => {
     query: {
       studentId,
       archivedAt: { $exists: false },
-      removedAt: { $exists: false },
+      studentRemovedAt: { $exists: false },
       $limit: 5,
       $skip: 0,
       // $sort: { 'activityLogs[0].createAd': -1 },
@@ -90,6 +90,12 @@ export const setLogsAsRead = async (matchingId, to) => {
   );
 };
 
+export const teacherRemoveMatching = async matchingId => {
+  return feathersClient
+    .service('matchings')
+    .patch(matchingId, { teacherRemovedAt: new Date() });
+};
+
 // export const setLogsAsRead = async (matchingId, to) => {
 //   return feathersClient.service('matchings').patch(
 //     matchingId,
@@ -117,7 +123,7 @@ export const fetchAllmatchingsByTeacherId = async teacherId => {
     query: {
       teacherId,
       archivedAt: { $exists: false },
-      removedAt: { $exists: false },
+      teacherRemovedAt: { $exists: false },
       $limit: 5,
       $skip: 0,
       // $sort: { 'activityLogs[0].createAd': -1 },
@@ -143,6 +149,12 @@ export const applyStudentAd = async studentAdId => {
     requireQualificationProof: true,
     fee: 100,
   });
+};
+
+export const studentRemoveMatching = async matchingId => {
+  return feathersClient
+    .service('matchings')
+    .patch(matchingId, { studentRemovedAt: new Date() });
 };
 
 // export const fetchMatchingLogs = async (matchingId, to) => {
