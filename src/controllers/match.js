@@ -42,16 +42,26 @@ export const fetchAllmatchingsByStudentId = async studentId => {
 
 export const fetchMatchingLogs = async (matchingId, to) => {
   return feathersClient.service('matching-logs').find({
-    query: { 
-      matchingId, to
-    },
+    query: {
+      matchingId,
+      to
+    }
   });
 }
 
 export const archiveMatching = async (matchingId) => {
-  return feathersClient.service('matching-logs').patch({ matchingId, archiveAt: new Date() });
+  return feathersClient.service('matching-logs').patch(
+    matchingId,
+    { archiveAt: new Date() }
+  );
 }
 
+export const fetchMatchingBy = async (matchingId) => {
+  return feathersClient.service('matching-logs').patch(
+    matchingId,
+    { archiveAt: new Date() }
+  );
+}
 
 //
 export const sendLog = async (matchingId) => {
@@ -64,10 +74,36 @@ export const sendLog = async (matchingId) => {
 }
 
 
-export const updateLog = yarn (matchingLogId) => {
-  return feathersClient.service('matching-logs').patch(matchingLogId, {
-     extra: {},
-  });
+export const updateLog = async (matchingLogId) => {
+  return feathersClient.service('matching-logs').patch(
+    matchingLogId,
+    { extra: {} }
+  );
+}
+
+// export const setLogsAsRead = async (matchingId, to) => {
+//   return feathersClient.service('matching-logs').patch(
+//     null,
+//     { read: new Date() },
+//     paramsForServer({
+//       query: {
+//         matchingId,
+//         to,
+//       },
+//       paginate: false,
+//     })
+//   );
+// }
+
+
+export const setLogsAsRead = async (matchingId, to) => {
+  return feathersClient.service('matchings').patch(
+    matchingId,
+    { to },
+    paramsForServer({
+      action: 'set-logs-as-read'
+    })
+  );
 }
 
 //
@@ -117,10 +153,11 @@ export const applyStudentAd = async studentAdId => {
 
 
 export const fetchMatchingLogs = async (matchingId, to) => {
-  return feathersClient.service('matching-logs').find({ 
-    query: { 
-      matchingId, to
-    },
+  return feathersClient.service('matching-logs').find({
+    query: {
+      matchingId,
+      to
+    }
   });
 }
 
