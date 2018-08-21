@@ -254,6 +254,15 @@ class App extends Component {
         console.log('authenticated event ');
       });
 
+      // listen matching event
+      feathersClient.service('matchings').on('patched', data => {
+        console.log('matching patched', data);
+      });
+
+      feathersClient.service('matching-logs').on('created', data => {
+        console.log('matching-logs patched', data);
+      });
+
       feathersClient
         .service('matchings')
         .on('created', data => console.log('created', data));
@@ -483,7 +492,7 @@ class App extends Component {
   applyCourse = async () => {
     try {
       const res = await feathersClient.service('matchings').create({
-        courseAdId: '5b6bcc9187fe47cfef7b9c3c',
+        courseAdId: '5b7a358dbfca4f2993e2c2f4',
       });
       console.log('apply course', res);
     } catch (err) {
@@ -493,7 +502,13 @@ class App extends Component {
 
   read = async () => {
     try {
-      const res = await setLogsAsRead('5b754d6270920b16cafd4c4c', 'teacher');
+      const res = await feathersClient
+        .service('matchings')
+        .patch('5b7a3e74a528fe2a22a30a36', {
+          // isTeacherPhoneGiven: true,
+          isStudentPhoneGiven: true,
+        });
+      // const res = await setLogsAsRead('5b754d6270920b16cafd4c4c', 'teacher');
       console.log('read logs', res);
     } catch (err) {
       console.log('read logs err', err);
