@@ -260,12 +260,13 @@ class App extends Component {
       });
 
       feathersClient.service('matching-logs').on('created', data => {
-        console.log('matching-logs patched', data);
+        console.log('matching-logs created', data);
       });
 
-      feathersClient
-        .service('matchings')
-        .on('created', data => console.log('created', data));
+      // feathersClient
+      //   .service('matchings')
+      //   .on('created', data => console.log('created', data));
+
       // test();
       // const user = await feathersClient.service('users').create({
       //   email: '123',
@@ -451,7 +452,7 @@ class App extends Component {
       const { data } = await feathersClient.service('course-ads').find({
         query: {
           category: 'English',
-          level: 1,
+          level: '1',
           fee: { $lte: 300 },
           'location.geo': {
             $near: {
@@ -493,6 +494,27 @@ class App extends Component {
     try {
       const res = await feathersClient.service('matchings').create({
         courseAdId: '5b7a358dbfca4f2993e2c2f4',
+        studentHeadline: 'line',
+        teacherHeadline: 'line',
+
+        title: 'title',
+        category: 'category',
+        level: 1,
+
+        location: {
+          geo: {
+            type: 'Point',
+            coordinates: [114.1825001, 22.2783863],
+          },
+        },
+        duration: 60,
+        homeTuition: false,
+        startDate: new Date(),
+
+        numOfStudents: 1,
+        noSmoking: true,
+        requireQualificationProof: false,
+        fee: 300,
       });
       console.log('apply course', res);
     } catch (err) {
@@ -502,13 +524,30 @@ class App extends Component {
 
   read = async () => {
     try {
-      const res = await feathersClient
-        .service('matchings')
-        .patch('5b7a3e74a528fe2a22a30a36', {
-          // isTeacherPhoneGiven: true,
-          isStudentPhoneGiven: true,
-        });
+      const res = await feathersClient.service('matchings').find({
+        query: {
+          studentId: '5b6a6b3ba7b91dc60f92b24f',
+        },
+      });
+      // const res = await feathersClient
+      //   .service('matchings')
+      //   .patch('5b7a3e74a528fe2a22a30a36', {
+      //     // isTeacherPhoneGiven: true,
+      //     isStudentPhoneGiven: true,
+      //   });
       // const res = await setLogsAsRead('5b754d6270920b16cafd4c4c', 'teacher');
+      console.log('read logs', res);
+    } catch (err) {
+      console.log('read logs err', err);
+    }
+  };
+
+  createTicket = async () => {
+    try {
+      const res = await feathersClient.service('tickets').create({
+        type: 'enquiry',
+        content: 'I want refund',
+      });
       console.log('read logs', res);
     } catch (err) {
       console.log('read logs err', err);
@@ -687,6 +726,17 @@ class App extends Component {
           style={{ cursor: 'pointer' }}
         >
           Read Logs
+        </button>
+        <br />
+        <br />
+
+        <br />
+        <button
+          onClick={() => this.createTicket()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Create Ticket
         </button>
         <br />
         <br />

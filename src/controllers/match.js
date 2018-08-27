@@ -2,13 +2,13 @@ import { paramsForServer } from 'feathers-hooks-common';
 import { feathersClient } from '../services';
 
 // event listeners
-feathersClient.service('matchings').on('patched', data => {
-  console.log('matching patched', data);
-});
+// feathersClient.service('matchings').on('patched', data => {
+//   console.log('matching patched', data);
+// });
 
-feathersClient.service('matching-logs').on('created', data => {
-  console.log('matching-logs patched', data);
-});
+// feathersClient.service('matching-logs').on('created', data => {
+//   console.log('matching-logs created', data);
+// });
 
 //
 // Student Apply
