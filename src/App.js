@@ -548,7 +548,24 @@ class App extends Component {
         type: 'enquiry',
         content: 'I want refund',
       });
+
       console.log('read logs', res);
+    } catch (err) {
+      console.log('read logs err', err);
+    }
+  };
+
+  initAppSettings = async () => {
+    try {
+      const student = await feathersClient.service('app-settings').create({
+        platform: 'student',
+      });
+      const teacher = await feathersClient.service('app-settings').create({
+        platform: 'teacher',
+      });
+
+      console.log('student app settings', student);
+      console.log('teacher app settings', teacher);
     } catch (err) {
       console.log('read logs err', err);
     }
@@ -737,6 +754,16 @@ class App extends Component {
           style={{ cursor: 'pointer' }}
         >
           Create Ticket
+        </button>
+        <br />
+        <br />
+        <br />
+        <button
+          onClick={() => this.initAppSettings()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          init app settings
         </button>
         <br />
         <br />
