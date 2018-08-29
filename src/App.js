@@ -395,6 +395,7 @@ class App extends Component {
       const ad = await createCourseAd({
         title: 'English Class',
         fee: 200,
+        onlineAt: new Date(),
         duration: 60,
       });
       this.setState({
@@ -564,6 +565,14 @@ class App extends Component {
         platform: 'teacher',
       });
 
+      // const test = await feathersClient
+      //   .service('course-ads')
+      //   .patch('5b7a358dbfca4f2993e2c2f4', {
+      //     // onlineAt: new Date(),
+      //     fee: 1000,
+      //     $unset: { onlineAt: 1 },
+      //   });
+      // console.log('test', test);
       console.log('student app settings', student);
       console.log('teacher app settings', teacher);
     } catch (err) {
@@ -758,12 +767,22 @@ class App extends Component {
         <br />
         <br />
         <br />
+        {/* <button
+          onClick={() => this.adOnOff()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Create Ticket
+        </button> */}
+        <br />
+        <br />
+        <br />
         <button
           onClick={() => this.initAppSettings()}
           type="button"
           style={{ cursor: 'pointer' }}
         >
-          init app settings
+          init app createSettings
         </button>
         <br />
         <br />

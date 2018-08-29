@@ -8,5 +8,5 @@ export const createSettings = async platform => {
 };
 
 export const getAppSettings = async platform => {
-  return feathersClient.service('app-settings').find({ platform });
+  return feathersClient.service('app-settings').find({ query: { platform } });
 };

@@ -4,7 +4,7 @@ const AuthByJWT = async () => {
   return feathersClient.authenticate({
     strategy: 'jwt',
     accessToken: window.localStorage.learnla,
-    platform: 'student',
+    platform: 'teacher',
   });
 };
 
