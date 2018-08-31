@@ -250,6 +250,10 @@ class App extends Component {
 
   async componentDidMount() {
     try {
+      feathersClient.service('teachers').on('patched', data => {
+        console.log('teacher patched', data);
+      });
+
       feathersClient.on('authenticated', () => {
         console.log('authenticated event ');
       });
