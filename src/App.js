@@ -4,6 +4,7 @@ import './App.css';
 
 import { feathersClient } from './services';
 import { paramsForServer } from 'feathers-hooks-common';
+import axios from 'axios';
 
 import {
   phoneSignUp,
@@ -24,6 +25,7 @@ class App extends Component {
     name: '',
     studentId: '',
     teacherId: '',
+    verifyCode: '',
     phoneNumber: '96344902',
     countryCode: '852',
     phone: '85296344902',
@@ -58,6 +60,24 @@ class App extends Component {
       console.log('authentication error', err);
     }
   }
+
+  verifyPhone = async () => {
+    try {
+      const { phoneNumber, countryCode, verifyCode } = this.state;
+      const res = await axios.post('http://localhost:3030/verify-phone', {
+        phoneNumber,
+        countryCode,
+        verifyCode,
+      });
+      const data = await res.json();
+      this.setState({
+        token: data.token,
+      });
+      console.log('verify phone success', data);
+    } catch (err) {
+      console.log('verify phone fail', err);
+    }
+  };
 
   studentVerifyPhone = async () => {
     try {
@@ -242,6 +262,25 @@ class App extends Component {
           Student request sms verification
         </button>
         <br />
+
+        <br />
+        <label>Code</label>
+        <input
+          type="text"
+          value={this.state.verifyCode}
+          onChange={e => this.setState({ verifyCode: e.target.value })}
+        />
+        <br />
+        <br />
+        <button
+          onClick={() => this.verifyPhone()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Verify Phone
+        </button>
+        <br />
+
         <hr />
         <br />
         <h3>Student Sign Up</h3>
@@ -267,7 +306,7 @@ class App extends Component {
             onChange={e => this.setState({ password: e.target.value })}
           />
           <br />
-          <label>Code</label>
+          <label>Token</label>
           <input
             type="text"
             value={this.state.twillioToken}
