@@ -6,19 +6,19 @@ import { feathersClient } from './services';
 import { paramsForServer } from 'feathers-hooks-common';
 import axios from 'axios';
 
-import {
-  phoneSignUp,
-  verifyPhone,
-  teacherSignUpByPhone,
-  // getUser,
-  // modifyUser,
-  // getTeacherProfile,
-  modifyTeacherProfile,
-  createCourseAd,
-  // getCourseAd,
-  modifyCourseAd,
-  findCourseAds,
-} from './controllers';
+// import {
+//   phoneSignUp,
+//   verifyPhone,
+//   teacherSignUpByPhone,
+//   // getUser,
+//   // modifyUser,
+//   // getTeacherProfile,
+//   modifyTeacherProfile,
+//   createCourseAd,
+//   // getCourseAd,
+//   modifyCourseAd,
+//   findCourseAds,
+// } from './controllers';
 
 class App extends Component {
   state = {
@@ -31,13 +31,12 @@ class App extends Component {
     phone: '85296344902',
     password: '1234',
     profile: {},
-    twillioToken: '',
     courseAdId: '',
     facebookTokenStudent:
       'EAADGpCGxZAboBALi5X22ltuZCvsVE3c0DgPJEijTW6cHxJ45UbHI79KRlvgBnHiCHQbwPPoOLKDDas096jDz36iFSilRNcX0l40m2UNKjubgssV1wHvZBy2YgEZBvQBv8PrhKGOQJSZAi3Pl9sH8cVWGbaTpNVLAZD',
     facebookTokenTeacher:
       'EAADWZA0P77j0BAJOFYRTDGkv36vZAj8gRRRxc4HvZCnD5d5m8t2JJutlSZA3rs5nUFnbiimuGf0XGoa1X90K1Nyyvs7DZBnWyCrDZABd46xR8YwbDxap7adBYRgC9dXy6pZCwCRC4SmA1GNL3dZBkOs0ybcxqWfPriasAkA0k9ZCuyOGhCdpbBnYSTO63sj7IaMAKPcdEIH9gqgZDZD',
-    token: 'JIbkNdtCqF',
+    token: '',
     tokenId: '5b603a6ba899dc134dd38bb8',
   };
 
@@ -64,12 +63,12 @@ class App extends Component {
   verifyPhone = async () => {
     try {
       const { phoneNumber, countryCode, verifyCode } = this.state;
-      const res = await axios.post('http://localhost:3030/verify-phone', {
+      const { data } = await axios.post('http://localhost:3030/verify-phone', {
         phoneNumber,
         countryCode,
         verifyCode,
       });
-      const data = await res.json();
+
       this.setState({
         token: data.token,
       });
@@ -79,7 +78,7 @@ class App extends Component {
     }
   };
 
-  studentVerifyPhone = async () => {
+  studentReqSMS = async () => {
     try {
       const { phoneNumber, countryCode } = this.state;
       const account = await feathersClient.service('students').find(
@@ -91,27 +90,39 @@ class App extends Component {
           action: 'phone-sign-up',
         }),
       );
-      console.log('verifyPhone', account);
+      console.log('student req sms', account);
     } catch (err) {
-      console.log('verifyPhone', err);
+      console.log('student req sms', err);
+    }
+  };
+
+  teacherReqSMS = async () => {
+    try {
+      const { phoneNumber, countryCode } = this.state;
+      const account = await feathersClient.service('teachers').find(
+        paramsForServer({
+          query: {
+            phoneNumber,
+            countryCode,
+          },
+          action: 'phone-sign-up',
+        }),
+      );
+      console.log('teacher req sms', account);
+    } catch (err) {
+      console.log('teacher req sms', err);
     }
   };
 
   studentSignUp = async () => {
     try {
-      const {
-        phoneNumber,
-        countryCode,
-        password,
-        name,
-        twillioToken,
-      } = this.state;
+      const { phoneNumber, countryCode, password, name, token } = this.state;
       const student = await feathersClient.service('students').create({
         phoneNumber,
         countryCode,
         password,
         name,
-        token: twillioToken,
+        token,
       });
       this.setState({
         name: student.name,
@@ -160,11 +171,13 @@ class App extends Component {
 
   teacherSignUp = async () => {
     try {
-      const { phone, password, name } = this.state;
+      const { phoneNumber, countryCode, password, name, token } = this.state;
       const teacher = await feathersClient.service('teachers').create({
-        phone,
+        phoneNumber,
+        countryCode,
         password,
         name,
+        token,
       });
       this.setState({
         name: teacher.name,
@@ -238,7 +251,20 @@ class App extends Component {
       console.log('login', err);
     }
   };
-
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
   render() {
     return (
       <div className="App">
@@ -255,11 +281,40 @@ class App extends Component {
 
         <br />
         <button
-          onClick={() => this.studentVerifyPhone()}
+          onClick={() => this.studentReqSMS()}
           type="button"
           style={{ cursor: 'pointer' }}
         >
           Student request sms verification
+        </button>
+        <br />
+
+        <br />
+        <label>Code</label>
+        <input
+          type="text"
+          value={this.state.verifyCode}
+          onChange={e => this.setState({ verifyCode: e.target.value })}
+        />
+        <br />
+        <br />
+        <button
+          onClick={() => this.verifyPhone()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Verify Phone
+        </button>
+        <br />
+
+        <hr />
+        <br />
+        <button
+          onClick={() => this.teacherReqSMS()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Teacher request sms verification
         </button>
         <br />
 
@@ -309,8 +364,8 @@ class App extends Component {
           <label>Token</label>
           <input
             type="text"
-            value={this.state.twillioToken}
-            onChange={e => this.setState({ twillioToken: e.target.value })}
+            value={this.state.token}
+            onChange={e => this.setState({ token: e.target.value })}
           />
           <br />
           <button
@@ -385,8 +440,15 @@ class App extends Component {
             onChange={e => this.setState({ password: e.target.value })}
           />
           <br />
+          <label>Token</label>
+          <input
+            type="text"
+            value={this.state.token}
+            onChange={e => this.setState({ token: e.target.value })}
+          />
+          <br />
           <button
-            onClick={() => this.TeacherSignUp()}
+            onClick={() => this.teacherSignUp()}
             type="button"
             style={{ cursor: 'pointer' }}
           >
