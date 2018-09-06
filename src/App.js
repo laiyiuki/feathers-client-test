@@ -31,13 +31,15 @@ class App extends Component {
     phone: '85296344902',
     password: '1234',
     profile: {},
-    courseAdId: '',
     facebookTokenStudent:
       'EAADGpCGxZAboBALi5X22ltuZCvsVE3c0DgPJEijTW6cHxJ45UbHI79KRlvgBnHiCHQbwPPoOLKDDas096jDz36iFSilRNcX0l40m2UNKjubgssV1wHvZBy2YgEZBvQBv8PrhKGOQJSZAi3Pl9sH8cVWGbaTpNVLAZD',
     facebookTokenTeacher:
       'EAADWZA0P77j0BAJOFYRTDGkv36vZAj8gRRRxc4HvZCnD5d5m8t2JJutlSZA3rs5nUFnbiimuGf0XGoa1X90K1Nyyvs7DZBnWyCrDZABd46xR8YwbDxap7adBYRgC9dXy6pZCwCRC4SmA1GNL3dZBkOs0ybcxqWfPriasAkA0k9ZCuyOGhCdpbBnYSTO63sj7IaMAKPcdEIH9gqgZDZD',
     token: '',
     tokenId: '5b603a6ba899dc134dd38bb8',
+    courseAdId: '',
+    studentAdId: '',
+    matchingId: '',
   };
 
   async componentDidMount() {
@@ -251,8 +253,51 @@ class App extends Component {
       console.log('login', err);
     }
   };
+
+  createCourseAd = async () => {
+    try {
+      const courseAd = await feathersClient.service('course-ads').create({
+        title: 'Good Course',
+      });
+      this.setState({
+        courseAdId: courseAd._id,
+      });
+      console.log('course ad created', courseAd);
+    } catch (err) {
+      console.log('course ad created fail', err);
+    }
+  };
+
+  createStudentAd = async () => {
+    try {
+      const studentAd = await feathersClient.service('student-ads').create({
+        title: 'Good Ad',
+      });
+      this.setState({
+        studentAdId: studentAd._id,
+      });
+      console.log('student ad created', studentAd);
+    } catch (err) {
+      console.log('student ad created fail', err);
+    }
+  };
   //
   //
+  applyCourse = async () => {
+    try {
+      const { courseAdId } = this.state;
+      const matching = await feathersClient.service('matchings').create({
+        courseAdId,
+      });
+
+      this.setState({
+        matchingId: matching._id,
+      });
+      console.log('matching created', matching);
+    } catch (err) {
+      console.log('matching created fail', err);
+    }
+  };
   //
   //
   //
@@ -274,11 +319,9 @@ class App extends Component {
         </header>
         <br />
         <br />
-
         <h3>{`Hello, ${
           this.state.profile && this ? this.state.profile.name : null
         }`}</h3>
-
         <br />
         <button
           onClick={() => this.studentReqSMS()}
@@ -288,7 +331,6 @@ class App extends Component {
           Student request sms verification
         </button>
         <br />
-
         <br />
         <label>Code</label>
         <input
@@ -306,7 +348,6 @@ class App extends Component {
           Verify Phone
         </button>
         <br />
-
         <hr />
         <br />
         <button
@@ -317,7 +358,6 @@ class App extends Component {
           Teacher request sms verification
         </button>
         <br />
-
         <br />
         <label>Code</label>
         <input
@@ -335,7 +375,6 @@ class App extends Component {
           Verify Phone
         </button>
         <br />
-
         <hr />
         <br />
         <h3>Student Sign Up</h3>
@@ -378,7 +417,6 @@ class App extends Component {
         </form>
         <br />
         <hr />
-
         <br />
         <h3>Student Log In</h3>
         <br />
@@ -404,7 +442,6 @@ class App extends Component {
           LOG IN
         </button>
         <br />
-
         <br />
         <button
           onClick={() => this.logout()}
@@ -415,7 +452,6 @@ class App extends Component {
         </button>
         <br />
         <hr />
-
         <br />
         <h3>Teacher Sign Up</h3>
         <form>
@@ -457,7 +493,6 @@ class App extends Component {
         </form>
         <br />
         <hr />
-
         <br />
         <h3>Teacher Log In</h3>
         <br />
@@ -483,7 +518,6 @@ class App extends Component {
           LOG IN
         </button>
         <br />
-
         <br />
         <button
           onClick={() => this.logout()}
@@ -494,7 +528,6 @@ class App extends Component {
         </button>
         <br />
         <hr />
-
         <br />
         <h3>Student Facebook Login</h3>
         <button
@@ -506,7 +539,6 @@ class App extends Component {
         </button>
         <br />
         <hr />
-
         <br />
         <h3>Teacher Facebook Login</h3>
         <button
@@ -518,15 +550,50 @@ class App extends Component {
         </button>
         <br />
         <hr />
-        {/* <br />
+        <br />
+        <br />
+        <h3>Create Course Ad</h3>
         <button
-          onClick={() => this.studentVerifyPhone()}
+          onClick={() => this.createCourseAd()}
           type="button"
           style={{ cursor: 'pointer' }}
         >
-          Student request sms verification
+          Create Coursse
         </button>
-        <br /> */}
+        <br />
+        <br />
+        <hr />
+        <br />s
+        <h3>Create Student Ad</h3>
+        <button
+          onClick={() => this.createStudentAd()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Create Student Ad
+        </button>
+        <br />
+        <br />
+        <hr />
+        <br />
+        <br />
+        <h3>Appy Course</h3>
+        <button
+          onClick={() => this.applyCourse()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Apply Course
+        </button>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
     );
   }
