@@ -51,7 +51,9 @@ class App extends Component {
         phone: auth.user.phone,
         profile: auth.user,
       });
-      // const response = await AuthByJWT();
+
+      // const res;
+      // ponse = await AuthByJWT();
       // this.setState({
       //   profile: response.profile,
       // });
@@ -75,8 +77,16 @@ class App extends Component {
       //
       //
       //
+      // const admin = await feathersClient.service('admins').create({
+      //   name: 'Thomas',
+      //   email: 'thomaslai@manhldgs.com',
+      //   phoneNumber: '96344902',
+      //   countryCode: '852',
+      //   password: '1234',
+      // });
+      // console.log('admin', admin);
     } catch (err) {
-      console.log('authentication error', err);
+      console.log(' error', err);
     }
   }
 
@@ -316,6 +326,83 @@ class App extends Component {
       console.log('matching created fail', err);
     }
   };
+  //
+  //
+  initSettings = async () => {
+    try {
+      const studentSettings = await feathersClient.service('settings').create({
+        platform: 'student',
+      });
+      const teacherSettings = await feathersClient.service('settings').create({
+        platform: 'teacher',
+      });
+
+      // const teacherSettings = await feathersClient
+      //   .service('settings')
+      //   .patch('5b9635b7f14081a9ee8415cc', {
+      //     welcomeCoin: 600,
+      //   });
+      console.log('teacher settings', teacherSettings);
+
+      console.log('student settings', studentSettings);
+    } catch (err) {
+      console.log('matching created fail', err);
+    }
+  };
+  //
+  //
+  createTicket = async () => {
+    try {
+      // const ticket = await feathersClient.service('tickets').create({
+      //   type: 'feedback',
+      //   content: 'Good',
+      // });
+
+      const ticket = await feathersClient
+        .service('tickets')
+        .patch('5b978889f26a920015013d37', {
+          type: 'help',
+        });
+
+      console.log('ticket created', ticket);
+    } catch (err) {
+      console.log('ticket create fail', err);
+    }
+  };
+  //
+  //
+  adminLogin = async () => {
+    try {
+      const admin = await feathersClient.authenticate({
+        phone: '85296344902',
+        // countryCode: '852',
+        password: '1234',
+        strategy: 'local',
+        platform: 'admin',
+      });
+
+      // this.setState({
+      //   name: teacher.name,
+      //   phone: teacher.phone,
+      //   teacherId: teacher._id,
+      //   profile: teacher,
+      // });
+      console.log('admin login', admin);
+    } catch (err) {
+      console.log('admin login fail', err);
+    }
+  };
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
   //
   //
   //
@@ -604,6 +691,44 @@ class App extends Component {
           Apply Course
         </button>
         <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h3>init app setttings</h3>
+        <button
+          onClick={() => this.initSettings()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          init Settings
+        </button>
+        <br />
+        <br />
+        <br />
+        <br />
+        <h3>Create Ticket</h3>
+        <button
+          onClick={() => this.createTicket()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          create ticket
+        </button>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h3>Admin Login</h3>
+        <button
+          onClick={() => this.adminLogin()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          admin login
+        </button>
         <br />
         <br />
         <br />
