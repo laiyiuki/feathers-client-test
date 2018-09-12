@@ -52,6 +52,17 @@ class App extends Component {
         profile: auth.user,
       });
 
+      // const approve = await feathersClient.service('teachers').patch(
+      //   '5b97512673f8bb00150bc590',
+      //   {},
+      //   paramsForServer({
+      //     query: {},
+      //     action: 'verification-approval',
+      //     subdocumentId: '5b98a8874b7e200015190355',
+      //   }),
+      // );
+      // console.log('approve', approve);
+
       // const res;
       // ponse = await AuthByJWT();
       // this.setState({
