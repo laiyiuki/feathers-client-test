@@ -326,7 +326,15 @@ class App extends Component {
       this.setState({
         courseAdId: courseAd._id,
       });
+
       console.log('course ad created', courseAd);
+      const updated_courseAd = await feathersClient
+        .service('course-ads')
+        .patch(courseAd._id, {
+          onlineAt: new Date(),
+        });
+
+      console.log('updated course ad', updated_courseAd);
     } catch (err) {
       console.log('course ad created fail', err);
     }
@@ -341,6 +349,12 @@ class App extends Component {
         studentAdId: studentAd._id,
       });
       console.log('student ad created', studentAd);
+      const updated_studentAd = await feathersClient
+        .service('student-ads')
+        .patch(studentAd._id, {
+          onlineAt: new Date(),
+        });
+      console.log('updated_studentAd', updated_studentAd);
     } catch (err) {
       console.log('student ad created fail', err);
     }
@@ -430,6 +444,62 @@ class App extends Component {
   };
   //
   //
+  filter = async () => {
+    try {
+      const result = await feathersClient.service('course-ads').find({
+        query: {
+          // category: 'English',
+          // level: 1,
+          // fee: { $lte: 300 },
+          'location.geo': {
+            $near: {
+              $geometry: {
+                type: 'Point',
+                coordinates: [114.15891699999997, 22.2849],
+              },
+              $minDistance: 0,
+              $maxDistance: parseFloat(12) * 1000,
+            },
+          },
+          $limit: 20,
+          $skip: 0,
+          $sort: { fee: 1 },
+        },
+      });
+      console.log('result', result);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  //
+  //
+  xx = async () => {
+    try {
+      const result = await feathersClient.service('course-ads').find({
+        query: {
+          // category: 'English',
+          // level: 1,
+          // fee: { $lte: 300 },
+          'location.geo': {
+            $near: {
+              $geometry: {
+                type: 'Point',
+                coordinates: [114.15891699999997, 22.2849],
+              },
+              $minDistance: 0,
+              $maxDistance: parseFloat(12) * 1000,
+            },
+          },
+          $limit: 20,
+          $skip: 0,
+          $sort: { fee: 1 },
+        },
+      });
+      console.log('result', result);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   //
   //
   //
@@ -766,6 +836,19 @@ class App extends Component {
           admin login
         </button>
         <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h3>Filter</h3>
+        <button
+          onClick={() => this.filter()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          filter
+        </button>
         <br />
         <br />
         <br />
