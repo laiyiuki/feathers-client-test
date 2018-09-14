@@ -52,6 +52,10 @@ class App extends Component {
         profile: auth.user,
       });
 
+      feathersClient.service('teachers').on('patched', data => {
+        console.log('teacher patched event', data);
+      });
+
       // try {
       //   const approve = await feathersClient.service('teachers').patch(
       //     '5b97512673f8bb00150bc590',
@@ -363,14 +367,19 @@ class App extends Component {
   //
   applyCourse = async () => {
     try {
-      const { courseAdId } = this.state;
+      // const { courseAdId } = this.state;
+      // const matching = await feathersClient.service('matchings').create({
+      //   courseAdId,
+      // });
+      //
+      // this.setState({
+      //   matchingId: matching._id,
+      // });
+
       const matching = await feathersClient.service('matchings').create({
-        courseAdId,
+        courseAdId: '5b9a3cda293aa8e92be41066',
       });
 
-      this.setState({
-        matchingId: matching._id,
-      });
       console.log('matching created', matching);
     } catch (err) {
       console.log('matching created fail', err);
