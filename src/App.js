@@ -56,6 +56,10 @@ class App extends Component {
         console.log('teacher patched event', data);
       });
 
+      feathersClient.service('achievements').on('created', data => {
+        console.log('achievement created', data);
+      });
+
       // try {
       //   const approve = await feathersClient.service('teachers').patch(
       //     '5b97512673f8bb00150bc590',
@@ -203,6 +207,22 @@ class App extends Component {
       console.log('Student created', student);
     } catch (err) {
       console.log('student create fail', err);
+    }
+  };
+
+  setComplete = async () => {
+    try {
+      const { studentId } = this.state;
+      const student = await feathersClient
+        .service('students')
+        .patch(
+          studentId,
+          { status: 'complete' },
+          paramsForServer({ action: 'set-profile-complete' }),
+        );
+      console.log('student updasted', student);
+    } catch (err) {
+      console.log('updated fail', err);
     }
   };
 
@@ -412,16 +432,19 @@ class App extends Component {
   //
   createTicket = async () => {
     try {
-      // const ticket = await feathersClient.service('tickets').create({
-      //   type: 'feedback',
-      //   content: 'Good',
-      // });
+      const ticket = await feathersClient.service('tickets').create(
+        {
+          type: 'feedback',
+          content: 'Good',
+        },
+        paramsForServer({ action: 'reward' }),
+      );
 
-      const ticket = await feathersClient
-        .service('tickets')
-        .patch('5b978889f26a920015013d37', {
-          type: 'help',
-        });
+      // const ticket = await feathersClient
+      //   .service('tickets')
+      //   .patch('5b978889f26a920015013d37', {
+      //     type: 'help',
+      //   });
 
       console.log('ticket created', ticket);
     } catch (err) {
@@ -482,29 +505,12 @@ class App extends Component {
   };
   //
   //
-  xx = async () => {
+  getAchievements = async () => {
     try {
-      const result = await feathersClient.service('course-ads').find({
-        query: {
-          // category: 'English',
-          // level: 1,
-          // fee: { $lte: 300 },
-          'location.geo': {
-            $near: {
-              $geometry: {
-                type: 'Point',
-                coordinates: [114.15891699999997, 22.2849],
-              },
-              $minDistance: 0,
-              $maxDistance: parseFloat(12) * 1000,
-            },
-          },
-          $limit: 20,
-          $skip: 0,
-          $sort: { fee: 1 },
-        },
+      const achievements = await feathersClient.service('achievements').find({
+        query: {},
       });
-      console.log('result', result);
+      console.log('achievements', achievements);
     } catch (err) {
       console.log(err);
     }
@@ -860,6 +866,18 @@ class App extends Component {
         </button>
         <br />
         <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h3>set student profile complete</h3>
+        <button
+          onClick={() => this.setComplete()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          set complete
+        </button>
         <br />
         <br />
         <br />
