@@ -517,6 +517,21 @@ class App extends Component {
   };
   //
   //
+  redeem = async () => {
+    try {
+      const redeem = await feathersClient
+        .service('achievements')
+        .patch(
+          '5ba138323433714eddac545d',
+          {},
+          paramsForServer({ action: 'redeem' }),
+        );
+      console.log('redeemed', redeem);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  //
   //
   approve = async () => {
     try {
@@ -934,6 +949,7 @@ class App extends Component {
         <br />
         <br />
         <br />
+<<<<<<< HEAD
         <h3>verification approval</h3>
         <button
           onClick={() => this.getAchievements()}
@@ -955,6 +971,16 @@ class App extends Component {
           style={{ cursor: 'pointer' }}
         >
           save
+=======
+        <br />
+        <h3>Redeem</h3>
+        <button
+          onClick={() => this.redeem()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          redeem
+>>>>>>> 27e4104707df3ebf14c040245e4c0ea2e7ff17ff
         </button>
         <br />
         <br />
