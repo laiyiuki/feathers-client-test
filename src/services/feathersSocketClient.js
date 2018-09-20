@@ -4,6 +4,7 @@ const io = require('socket.io-client');
 const auth = require('@feathersjs/authentication-client');
 // const HOST = 'https://learnla-api-staging.herokuapp.com';
 const HOST = 'http://localhost:3030';
+// const HOST = 'https://learnla-api-dev.herokuapp.com';
 
 // feathers socket client
 const client = feathers();

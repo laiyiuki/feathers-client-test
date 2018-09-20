@@ -518,6 +518,56 @@ class App extends Component {
   //
   //
   //
+  approve = async () => {
+    try {
+      const res = await feathersClient.service('teachers').patch(
+        '5b9a2e33930e84e78ceb3352',
+        {
+          name: 'John',
+          verifications: [
+            {
+              status: 'approved',
+              _id: '5ba0bfd5ab198e001496a1da',
+              type: 'id',
+              image:
+                'v1537261524/apps/staging/teachers/verifications/hkgln5omxtklkjytjtcf',
+              approvedBy: '5b962a35ebd1390015b5bfd0',
+            },
+          ],
+        },
+        paramsForServer({
+          action: 'verification-approval',
+          subdocumentId: '5ba0bfd5ab198e001496a1da',
+        }),
+      );
+
+      console.log('patched', res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  //
+  //
+  //
+  saveOnesignalId = async () => {
+    try {
+      // const { studentId } = this.state;
+      const res = await feathersClient
+        .service('students')
+        .patch('5b9a4483a7da72ea17b441a0', {
+          $addToSet: {
+            oneSignalIds: 'cde',
+          },
+        });
+      console.log('patched', res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  //
+  //
+  //
   //
   //
   //
@@ -877,6 +927,34 @@ class App extends Component {
           style={{ cursor: 'pointer' }}
         >
           set complete
+        </button>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h3>verification approval</h3>
+        <button
+          onClick={() => this.getAchievements()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          approve
+        </button>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h3>save oneSignal Id</h3>
+        <button
+          onClick={() => this.saveOnesignalId()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          save
         </button>
         <br />
         <br />
