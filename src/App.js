@@ -197,6 +197,7 @@ class App extends Component {
         password,
         name,
         token,
+        oneSignalIds: ['28bb5a8a-ee7a-4675-bf19-0571b18e5754'],
       });
       this.setState({
         name: student.name,
@@ -246,6 +247,7 @@ class App extends Component {
         phone,
         password,
         platform: 'student',
+        oneSignalIds: ['28bb5a8a-ee7a-4675-bf19-0571b18e5754'],
       });
       this.setState({
         name: student.user.name,
@@ -268,6 +270,7 @@ class App extends Component {
         password,
         name,
         token,
+        oneSignalIds: ['28bb5a8a-ee7a-4675-bf19-0571b18e5754'],
       });
       this.setState({
         name: teacher.name,
@@ -581,6 +584,18 @@ class App extends Component {
     }
   };
   //
+  //
+  //
+  notification = async () => {
+    try {
+      // const { studentId } = this.state;
+      const res = await axios.post('http://localhost:3030/notification', {});
+
+      console.log('patched', res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   //
   //
   //
@@ -949,7 +964,6 @@ class App extends Component {
         <br />
         <br />
         <br />
-<<<<<<< HEAD
         <h3>verification approval</h3>
         <button
           onClick={() => this.getAchievements()}
@@ -971,16 +985,24 @@ class App extends Component {
           style={{ cursor: 'pointer' }}
         >
           save
-=======
+          <br />
+        </button>
         <br />
-        <h3>Redeem</h3>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h3>Notification</h3>
         <button
-          onClick={() => this.redeem()}
+          onClick={() => this.notification()}
           type="button"
           style={{ cursor: 'pointer' }}
         >
-          redeem
->>>>>>> 27e4104707df3ebf14c040245e4c0ea2e7ff17ff
+          notification
+          <br />
         </button>
         <br />
         <br />
