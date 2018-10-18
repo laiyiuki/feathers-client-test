@@ -6,6 +6,8 @@ import { feathersClient } from './services';
 import { paramsForServer } from 'feathers-hooks-common';
 import axios from 'axios';
 
+const HOST = 'https://api.learnla.app';
+
 // import {
 //   phoneSignUp,
 //   verifyPhone,
@@ -137,7 +139,8 @@ class App extends Component {
   verifyPhone = async () => {
     try {
       const { phoneNumber, countryCode, verifyCode } = this.state;
-      const { data } = await axios.post('http://localhost:3030/verify-phone', {
+      const { data } = await axios.post(HOST + '/verify-phone', {
+        platform: 'teacher',
         phoneNumber,
         countryCode,
         verifyCode,
@@ -162,7 +165,7 @@ class App extends Component {
             countryCode,
           },
           action: 'phone-sign-up',
-        }),
+        })
       );
       console.log('student req sms', account);
     } catch (err) {
@@ -180,7 +183,7 @@ class App extends Component {
             countryCode,
           },
           action: 'phone-sign-up',
-        }),
+        })
       );
       console.log('teacher req sms', account);
     } catch (err) {
@@ -219,7 +222,7 @@ class App extends Component {
         .patch(
           studentId,
           { status: 'complete' },
-          paramsForServer({ action: 'set-profile-complete' }),
+          paramsForServer({ action: 'set-profile-complete' })
         );
       console.log('student updasted', student);
     } catch (err) {
@@ -400,7 +403,27 @@ class App extends Component {
       // });
 
       const matching = await feathersClient.service('matchings').create({
-        courseAdId: '5b9a3cda293aa8e92be41066',
+        courseAdId: '5bb33e8a699793463d18a2d7',
+        timeTable: [37, 38, 39, 40],
+        numOfStudents: 1,
+        studentHeadline: '你邀請老師Gggg上門指導',
+        teacherHeadline: '我們的國家請你上門指導',
+        title: '體育科',
+        category: '小學',
+        level: 5,
+        fee: 200,
+        duration: 60,
+        homeTuition: true,
+        noSmoking: false,
+        startDate: new Date(),
+        location: {
+          geo: {
+            type: 'Point',
+            coordinates: [114.142449, 22.2811673],
+          },
+          categories: [1, 2],
+        },
+        requireQualificationProof: false,
       });
 
       console.log('matching created', matching);
@@ -440,7 +463,7 @@ class App extends Component {
           type: 'feedback',
           content: 'Good',
         },
-        paramsForServer({ action: 'reward' }),
+        paramsForServer({ action: 'reward' })
       );
 
       // const ticket = await feathersClient
@@ -527,7 +550,7 @@ class App extends Component {
         .patch(
           '5ba138323433714eddac545d',
           {},
-          paramsForServer({ action: 'redeem' }),
+          paramsForServer({ action: 'redeem' })
         );
       console.log('redeemed', redeem);
     } catch (err) {
@@ -556,7 +579,7 @@ class App extends Component {
         paramsForServer({
           action: 'verification-approval',
           subdocumentId: '5ba0bfd5ab198e001496a1da',
-        }),
+        })
       );
 
       console.log('patched', res);
@@ -598,6 +621,18 @@ class App extends Component {
   };
   //
   //
+  getStatistics = async () => {
+    try {
+      const stats = await feathersClient.service('admins').find(
+        paramsForServer({
+          action: 'get-statistics',
+        })
+      );
+      console.log('statistics', stats);
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
   //
   //
   //
@@ -869,8 +904,7 @@ class App extends Component {
         <br />
         <br />
         <hr />
-        <br />s
-        <h3>Create Student Ad</h3>
+        <br />s<h3>Create Student Ad</h3>
         <button
           onClick={() => this.createStudentAd()}
           type="button"
@@ -1006,6 +1040,19 @@ class App extends Component {
         </button>
         <br />
         <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h3>Statistics</h3>
+        <button
+          onClick={() => this.getStatistics()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          getStatistics
+          <br />
+        </button>
         <br />
         <br />
         <br />
