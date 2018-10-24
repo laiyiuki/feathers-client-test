@@ -397,13 +397,13 @@ class App extends Component {
       // const matching = await feathersClient.service('matchings').create({
       //   courseAdId,
       // });
-      //
+
       // this.setState({
       //   matchingId: matching._id,
       // });
 
       const matching = await feathersClient.service('matchings').create({
-        courseAdId: '5bb33e8a699793463d18a2d7',
+        courseAdId: '5bcd76e328c013d1e0fec712',
         timeTable: [37, 38, 39, 40],
         numOfStudents: 1,
         studentHeadline: '你邀請老師Gggg上門指導',
@@ -484,7 +484,7 @@ class App extends Component {
       const admin = await feathersClient.authenticate({
         phone: '85296344902',
         // countryCode: '852',
-        password: '1234',
+        password: 'Thomas@m1',
         strategy: 'local',
         platform: 'admin',
       });
@@ -516,10 +516,10 @@ class App extends Component {
                 coordinates: [114.15891699999997, 22.2849],
               },
               $minDistance: 0,
-              $maxDistance: parseFloat(12) * 1000,
+              $maxDistance: parseFloat(12) * 35000,
             },
           },
-          $limit: 20,
+          $limit: 50,
           $skip: 0,
           $sort: { fee: 1 },
         },
