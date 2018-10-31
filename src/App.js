@@ -358,13 +358,13 @@ class App extends Component {
       });
 
       console.log('course ad created', courseAd);
-      const updated_courseAd = await feathersClient
-        .service('course-ads')
-        .patch(courseAd._id, {
-          onlineAt: new Date(),
-        });
+      // const updated_courseAd = await feathersClient
+      //   .service('course-ads')
+      //   .patch(courseAd._id, {
+      //     onlineAt: new Date(),
+      //   });
 
-      console.log('updated course ad', updated_courseAd);
+      // console.log('updated course ad', updated_courseAd);
     } catch (err) {
       console.log('course ad created fail', err);
     }
@@ -519,7 +519,7 @@ class App extends Component {
               $maxDistance: parseFloat(12) * 35000,
             },
           },
-          $limit: 50,
+          $limit: 150,
           $skip: 0,
           $sort: { fee: 1 },
         },
@@ -636,6 +636,22 @@ class App extends Component {
   //
   //
   //
+  incCourseView = async () => {
+    try {
+      const res = await feathersClient.service('course-ads').patch(
+        // '5bcd76e328c013d1e0fec712',
+        '5bd93c76400c2f0f2d309706',
+        // '5bd6db4a70cc6d242747bceb',
+        {},
+        paramsForServer({
+          action: 'inc-view-count',
+        })
+      );
+      console.log('view count', res);
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
   //
   //
   //
@@ -1051,6 +1067,21 @@ class App extends Component {
           style={{ cursor: 'pointer' }}
         >
           getStatistics
+          <br />
+        </button>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h3>view Course</h3>
+        <button
+          onClick={() => this.incCourseView()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          view Course
           <br />
         </button>
         <br />
