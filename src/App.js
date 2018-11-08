@@ -484,7 +484,7 @@ class App extends Component {
       const admin = await feathersClient.authenticate({
         phone: '85296344902',
         // countryCode: '852',
-        password: 'Thomas@m1',
+        password: '1234',
         strategy: 'local',
         platform: 'admin',
       });
@@ -509,16 +509,16 @@ class App extends Component {
           // category: 'English',
           // level: 1,
           // fee: { $lte: 300 },
-          'location.geo': {
-            $near: {
-              $geometry: {
-                type: 'Point',
-                coordinates: [114.15891699999997, 22.2849],
-              },
-              $minDistance: 0,
-              $maxDistance: parseFloat(12) * 35000,
-            },
-          },
+          // 'location.geo': {
+          //   $near: {
+          //     $geometry: {
+          //       type: 'Point',
+          //       coordinates: [114.129427, 22.2829495],
+          //     },
+          //     $minDistance: 0,
+          //     $maxDistance: 35000,
+          //   },
+          // },
           $limit: 150,
           $skip: 0,
           $sort: { fee: 1 },
