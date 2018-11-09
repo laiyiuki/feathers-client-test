@@ -656,8 +656,58 @@ class App extends Component {
   //
   //
   //
+  setCourseOnline = async () => {
+    try {
+      const res = await feathersClient
+        .service('course-ads')
+        .patch('5bd93c76400c2f0f2d309706', { onlineAt: new Date() });
+
+      console.log('setCourseOnline', res);
+    } catch (err) {
+      console.log('setCourseOnline err', err);
+    }
+  };
   //
   //
+  setCourseOffline = async () => {
+    try {
+      const res = await feathersClient
+        .service('course-ads')
+        .patch('5bd93c76400c2f0f2d309706', { onlineAt: null });
+
+      console.log('setCourseOffline', res);
+    } catch (err) {
+      console.log('setCourseOffline err', err);
+    }
+  };
+  //
+  //
+  //
+  //
+  setStudentAdOnline = async () => {
+    try {
+      const res = await feathersClient
+        .service('student-ads')
+        .patch('5bd6db4a70cc6d242747bceb', { onlineAt: new Date() });
+
+      console.log('setStudentAdOnline', res);
+    } catch (err) {
+      console.log('setStudentAdOnline err', err);
+    }
+  };
+  //
+  //
+  setStudentAdOffline = async () => {
+    try {
+      const res = await feathersClient
+        .service('student-ads')
+        .patch('5bd6db4a70cc6d242747bceb', { onlineAt: null });
+
+      console.log('setStudentAdOffline', res);
+    } catch (err) {
+      console.log('setStudentAdOffline err', err);
+    }
+  };
   //
   //
   //
@@ -1082,6 +1132,52 @@ class App extends Component {
           style={{ cursor: 'pointer' }}
         >
           view Course
+          <br />
+        </button>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h3>Set Course Online/Offline</h3>
+        <button
+          onClick={() => this.setCourseOffline()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Offline
+          <br />
+        </button>
+        <button
+          onClick={() => this.setCourseOnline()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Online
+          <br />
+        </button>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h3>Set student-ad Online/Offline</h3>
+        <button
+          onClick={() => this.setStudentAdOffline()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Offline
+          <br />
+        </button>
+        <button
+          onClick={() => this.setStudentAdOnline()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Online
           <br />
         </button>
         <br />
