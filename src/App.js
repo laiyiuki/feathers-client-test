@@ -509,16 +509,21 @@ class App extends Component {
           // category: 'English',
           // level: 1,
           // fee: { $lte: 300 },
-          // 'location.geo': {
-          //   $near: {
-          //     $geometry: {
-          //       type: 'Point',
-          //       coordinates: [114.129427, 22.2829495],
-          //     },
-          //     $minDistance: 0,
-          //     $maxDistance: 35000,
-          //   },
-          // },
+          'location.geo': {
+            $geoWithin: {
+              $centerSphere: [[114.129427, 22.2829495], 10 / 6378.1],
+            },
+
+            //   $nearSphere: {
+            //     $geometry: {
+            //       type: 'Point',
+            //       coordinates: [114.129427, 22.2829495],
+            //     },
+            //     $minDistance: 0,
+            //     $maxDistance: 35000,
+            //     spherical: true,
+            //   },
+          },
           $limit: 150,
           $skip: 0,
           $sort: { fee: 1 },
