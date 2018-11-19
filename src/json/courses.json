@@ -1722,6 +1722,13 @@
       "level": 1000
     },
     {
+      "id": "考試-LCCI會計-null",
+      "type": "study",
+      "category": "考試",
+      "title": "LCCI會計",
+      "level": 1000
+    },
+    {
       "id": "考試-電工A牌補習-null",
       "type": "study",
       "category": "考試",
@@ -2818,6 +2825,27 @@
       "type": "hobby",
       "category": "舞蹈",
       "title": "寶萊塢舞蹈",
+      "level": 1000
+    },
+    {
+      "id": "船牌證書-遊艇駕駛-null",
+      "type": "hobby",
+      "category": "船牌證書",
+      "title": "遊艇駕駛",
+      "level": 1000
+    },
+    {
+      "id": "槍械牌照-魚槍射擊-null",
+      "type": "hobby",
+      "category": "槍械牌照",
+      "title": "魚槍射擊",
+      "level": 1000
+    },
+    {
+      "id": "極限運動-自由潛水-null",
+      "type": "hobby",
+      "category": "極限運動",
+      "title": "自由潛水",
       "level": 1000
     },
     {
