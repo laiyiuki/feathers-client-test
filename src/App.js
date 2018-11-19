@@ -6,6 +6,8 @@ import { feathersClient } from './services';
 import { paramsForServer } from 'feathers-hooks-common';
 import axios from 'axios';
 
+import { levelsHobby, courses } from './json/data';
+
 const HOST = 'https://api.learnla.app';
 
 // import {
@@ -135,6 +137,27 @@ class App extends Component {
       console.log(' error', err);
     }
   }
+
+  updateSetting = async () => {
+    try {
+      const res1 = await feathersClient
+        .service('settings')
+        .patch('5b98c774e97b94d2b9e1f3b3', {
+          levelsHobby,
+          courses,
+        });
+      const res2 = await feathersClient
+        .service('settings')
+        .patch('5b98c774e97b94d2b9e1f3b2', {
+          levelsHobby,
+          courses,
+        });
+      console.log('updated settings1', res1);
+      console.log('updated settings2', res2);
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
 
   verifyPhone = async () => {
     try {
@@ -484,7 +507,7 @@ class App extends Component {
       const admin = await feathersClient.authenticate({
         phone: '85296344902',
         // countryCode: '852',
-        password: '1234',
+        password: 'Thomas@m1',
         strategy: 'local',
         platform: 'admin',
       });
@@ -1187,7 +1210,19 @@ class App extends Component {
         </button>
         <br />
         <br />
+        updateSetting
         <br />
+        <br />
+        <br />
+        <h3>Update Setting</h3>
+        <button
+          onClick={() => this.updateSetting()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Update
+          <br />
+        </button>
       </div>
     );
   }
