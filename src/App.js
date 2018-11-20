@@ -146,13 +146,14 @@ class App extends Component {
           levelsHobby,
           courses,
         });
+      console.log('updated settings1', res1);
+
       const res2 = await feathersClient
         .service('settings')
         .patch('5b98c774e97b94d2b9e1f3b2', {
           levelsHobby,
           courses,
         });
-      console.log('updated settings1', res1);
       console.log('updated settings2', res2);
     } catch (err) {
       console.log('err', err);
@@ -507,7 +508,7 @@ class App extends Component {
       const admin = await feathersClient.authenticate({
         phone: '85296344902',
         // countryCode: '852',
-        password: 'Thomas@m1',
+        password: this.state.password,
         strategy: 'local',
         platform: 'admin',
       });
@@ -1051,6 +1052,14 @@ class App extends Component {
         <br />
         <br />
         <h3>Admin Login</h3>
+        <br />
+        <label>Password</label>
+        <input
+          type="text"
+          value={this.state.password}
+          onChange={e => this.setState({ password: e.target.value })}
+        />
+        <br />
         <button
           onClick={() => this.adminLogin()}
           type="button"
@@ -1221,8 +1230,12 @@ class App extends Component {
           style={{ cursor: 'pointer' }}
         >
           Update
-          <br />
         </button>
+        <br />
+        <br />
+        <br /> <br />
+        <br />
+        <br />
       </div>
     );
   }
