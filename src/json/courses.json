@@ -2471,6 +2471,13 @@
       "level": 1000
     },
     {
+      "id": "語文-泰文-null",
+      "type": "hobby",
+      "category": "語文",
+      "title": "泰文",
+      "level": 1000
+    },
+    {
       "id": "語文-西班牙文-null",
       "type": "hobby",
       "category": "語文",
@@ -2846,6 +2853,13 @@
       "type": "hobby",
       "category": "極限運動",
       "title": "自由潛水",
+      "level": 1000
+    },
+    {
+      "id": "極限運動-跳傘-null",
+      "type": "hobby",
+      "category": "極限運動",
+      "title": "跳傘",
       "level": 1000
     },
     {

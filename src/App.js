@@ -6,7 +6,7 @@ import { feathersClient } from './services';
 import { paramsForServer } from 'feathers-hooks-common';
 import axios from 'axios';
 
-import { levelsHobby, courses } from './json/data';
+import { levelsHobby, courses, categories } from './json/courses';
 
 const HOST = 'https://api.learnla.app';
 
@@ -145,6 +145,7 @@ class App extends Component {
         .patch('5b98c774e97b94d2b9e1f3b3', {
           levelsHobby,
           courses,
+          categories,
         });
       console.log('updated settings1', res1);
 
@@ -153,6 +154,7 @@ class App extends Component {
         .patch('5b98c774e97b94d2b9e1f3b2', {
           levelsHobby,
           courses,
+          categories,
         });
       console.log('updated settings2', res2);
     } catch (err) {
