@@ -1057,7 +1057,7 @@ class App extends Component {
         <br />
         <label>Password</label>
         <input
-          type="text"
+          type="password"
           value={this.state.password}
           onChange={e => this.setState({ password: e.target.value })}
         />

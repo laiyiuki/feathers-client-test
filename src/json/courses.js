@@ -1,52 +1,3 @@
-export const levelsHobby = {
-  鋼琴: {
-    '10': {
-      id: '初學',
-      levelText: '初學',
-    },
-    '20': {
-      id: '一級',
-      levelText: '一級或以下',
-    },
-    '30': {
-      id: '二級',
-      levelText: '二級或以下',
-    },
-    '40': {
-      id: '三級',
-      levelText: '三級或以下',
-    },
-    '50': {
-      id: '四級',
-      levelText: '四級或以下',
-    },
-    '60': {
-      id: '五級',
-      levelText: '五級或以下',
-    },
-    '70': {
-      id: '六級',
-      levelText: '六級或以下',
-    },
-    '80': {
-      id: '七級',
-      levelText: '七級或以下',
-    },
-    '90': {
-      id: '八級',
-      levelText: '八級或以下',
-    },
-    '100': {
-      id: '演奏級',
-      levelText: '演奏級或以下',
-    },
-    '1000': {
-      id: 'X',
-      levelText: '',
-    },
-  },
-};
-
 export const categories = [
   {
     id: '幼稚園',
@@ -175,6 +126,55 @@ export const categories = [
     type: 'hobby',
   },
 ];
+
+export const levelsHobby = {
+  鋼琴: {
+    '10': {
+      id: '初學',
+      levelText: '初學',
+    },
+    '20': {
+      id: '一級',
+      levelText: '一級或以下',
+    },
+    '30': {
+      id: '二級',
+      levelText: '二級或以下',
+    },
+    '40': {
+      id: '三級',
+      levelText: '三級或以下',
+    },
+    '50': {
+      id: '四級',
+      levelText: '四級或以下',
+    },
+    '60': {
+      id: '五級',
+      levelText: '五級或以下',
+    },
+    '70': {
+      id: '六級',
+      levelText: '六級或以下',
+    },
+    '80': {
+      id: '七級',
+      levelText: '七級或以下',
+    },
+    '90': {
+      id: '八級',
+      levelText: '八級或以下',
+    },
+    '100': {
+      id: '演奏級',
+      levelText: '演奏級或以下',
+    },
+    '1000': {
+      id: 'X',
+      levelText: '',
+    },
+  },
+};
 
 export const courses = [
   {
@@ -1746,6 +1746,13 @@ export const courses = [
     level: 13,
   },
   {
+    id: '考試-YLE-null',
+    type: 'study',
+    category: '考試',
+    title: 'YLE',
+    level: 1000,
+  },
+  {
     id: '考試-AP-null',
     type: 'study',
     category: '考試',
@@ -2135,6 +2142,13 @@ export const courses = [
     type: 'hobby',
     category: '運動健身',
     title: '私人健身',
+    level: 1000,
+  },
+  {
+    id: '運動健身-坐卧內肌運動-null',
+    type: 'hobby',
+    category: '運動健身',
+    title: '坐卧內肌運動',
     level: 1000,
   },
   {
@@ -2695,6 +2709,13 @@ export const courses = [
     type: 'hobby',
     category: '游泳',
     title: '四式',
+    level: 1000,
+  },
+  {
+    id: '游泳-游泳及兒童體適能-null',
+    type: 'hobby',
+    category: '游泳',
+    title: '游泳及兒童體適能',
     level: 1000,
   },
   {
