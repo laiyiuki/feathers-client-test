@@ -400,6 +400,7 @@ class App extends Component {
     try {
       const studentAd = await feathersClient.service('student-ads').create({
         title: 'Good Ad',
+        onlineAt: new Date(),
       });
       this.setState({
         studentAdId: studentAd._id,
@@ -429,7 +430,8 @@ class App extends Component {
       // });
 
       const matching = await feathersClient.service('matchings').create({
-        courseAdId: '5bcd76e328c013d1e0fec712',
+        // courseAdId: '5bcd76e328c013d1e0fec712', // local
+        courseAdId: '5c131366d1b532001662397c', // staging
         timeTable: [37, 38, 39, 40],
         numOfStudents: 1,
         studentHeadline: '你邀請老師Gggg上門指導',
@@ -739,6 +741,63 @@ class App extends Component {
       console.log('setStudentAdOffline err', err);
     }
   };
+  //
+  //
+  setAvatarAchievements = async () => {
+    try {
+      const teachers = await feathersClient.service('teachers').find({
+        query: {
+          avatar: { $exists: true, $ne: null },
+          $limit: 1000,
+        },
+      });
+
+      const teacherIds = teachers.data.map(teacher => teacher._id);
+      console.log('teacherIds', teacherIds);
+
+      const achievements = await feathersClient.service('achievements').find({
+        query: {
+          category: 'signUp',
+          type: 'avatar',
+          ownerType: 'teacher',
+        },
+      });
+
+      const teacherIdsWithAchievement = achievements.data.map(
+        achievement => achievement.ownerId
+      );
+
+      console.log('achievements', achievements);
+
+      console.log('teacherIdsWithAchievement', teacherIdsWithAchievement);
+
+      const result = teacherIds.filter(
+        teacherId => teacherIdsWithAchievement.indexOf(teacherId) === -1
+      );
+
+      console.log('result', result);
+      for (const id of result) {
+        try {
+          const response = await feathersClient
+            .service('teachers')
+            .patch(id, {}, paramsForServer({ action: 'set-avatar' }));
+
+          console.log('final res', response);
+        } catch (err) {
+          console.log(`update teacherId ${id} err`, err);
+        }
+      }
+
+      // console.log('set avatar achievements', teachers);
+    } catch (err) {
+      console.log('set avatar achievements err', err);
+    }
+  };
+  //
+  //
+  //
+  //
+  //
   //
   //
   //
@@ -1231,11 +1290,23 @@ class App extends Component {
           type="button"
           style={{ cursor: 'pointer' }}
         >
-          Update
+          Update Settings
         </button>
         <br />
         <br />
-        <br /> <br />
+        <br />
+        {/* <br />
+        <h3>Set Avatar achievements</h3>
+        <button
+          onClick={() => this.setAvatarAchievements()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          Set Avatar Achievement
+        </button>
+        <br /> */}
+        <br />
+        <br />
         <br />
         <br />
       </div>

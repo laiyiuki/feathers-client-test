@@ -206,6 +206,13 @@ export const courses = [
     level: 1000,
   },
   {
+    id: '幼稚園-特殊學習需要兒童訓練-null',
+    type: 'study',
+    category: '幼稚園',
+    title: '特殊學習需要兒童訓練',
+    level: 1000,
+  },
+  {
     id: '小學-全科-小一',
     type: 'study',
     category: '小學',
@@ -1907,6 +1914,13 @@ export const courses = [
     level: 1000,
   },
   {
+    id: '其他補習-遊戲學習-null',
+    type: 'study',
+    category: '其他補習',
+    title: '遊戲學習',
+    level: 1000,
+  },
+  {
     id: '興趣-兒童Play-Group-null',
     type: 'hobby',
     category: '興趣',
@@ -2103,6 +2117,13 @@ export const courses = [
     level: 1000,
   },
   {
+    id: '美術-幼兒視覺藝術-null',
+    type: 'hobby',
+    category: '美術',
+    title: '幼兒視覺藝術',
+    level: 1000,
+  },
+  {
     id: '美術-兒童繪畫-null',
     type: 'hobby',
     category: '美術',
@@ -2177,6 +2198,13 @@ export const courses = [
     type: 'hobby',
     category: '運動健身',
     title: '足球',
+    level: 1000,
+  },
+  {
+    id: '運動健身-守門員訓練-null',
+    type: 'hobby',
+    category: '運動健身',
+    title: '守門員訓練',
     level: 1000,
   },
   {
@@ -3048,6 +3076,13 @@ export const courses = [
     level: 1000,
   },
   {
+    id: '其他興趣-旋風球-null',
+    type: 'hobby',
+    category: '其他興趣',
+    title: '旋風球',
+    level: 1000,
+  },
+  {
     id: '其他興趣-機械工程專科-null',
     type: 'hobby',
     category: '其他興趣',
@@ -3087,6 +3122,13 @@ export const courses = [
     type: 'hobby',
     category: '其他興趣',
     title: '哲學',
+    level: 1000,
+  },
+  {
+    id: '其他興趣-哲學輔導-null',
+    type: 'hobby',
+    category: '其他興趣',
+    title: '哲學輔導',
     level: 1000,
   },
   {
