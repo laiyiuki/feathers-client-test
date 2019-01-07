@@ -798,6 +798,22 @@ class App extends Component {
   //
   //
   //
+  requestPhone = async () => {
+    try {
+      const res = await feathersClient
+        .service('matchings')
+        .patch(
+          '5c08fb5157d890001624d1c4',
+          {},
+          paramsForServer({ action: 'request-phone' })
+        );
+
+      console.log('requestPhone', res);
+    } catch (err) {
+      console.log('requestPhone err', err);
+    }
+  };
+  //
   //
   //
   //
@@ -1307,6 +1323,16 @@ class App extends Component {
         <br /> */}
         <br />
         <br />
+        <br />
+        <br />
+        <h3>request phone</h3>
+        <button
+          onClick={() => this.requestPhone()}
+          type="button"
+          style={{ cursor: 'pointer' }}
+        >
+          request phone
+        </button>
         <br />
         <br />
       </div>

@@ -2215,6 +2215,13 @@ export const courses = [
     level: 1000,
   },
   {
+    id: '運動健身-網球-null',
+    type: 'hobby',
+    category: '運動健身',
+    title: '網球',
+    level: 1000,
+  },
+  {
     id: '運動健身-拳擊-null',
     type: 'hobby',
     category: '運動健身',
@@ -2443,6 +2450,13 @@ export const courses = [
     type: 'hobby',
     category: '音樂',
     title: '電結他',
+    level: 1000,
+  },
+  {
+    id: '音樂-木琴敲擊樂-null',
+    type: 'hobby',
+    category: '音樂',
+    title: '木琴敲擊樂',
     level: 1000,
   },
   {
@@ -3069,10 +3083,24 @@ export const courses = [
     level: 1000,
   },
   {
+    id: '極限運動-駕駛私人飛機-null',
+    type: 'hobby',
+    category: '極限運動',
+    title: '駕駛私人飛機',
+    level: 1000,
+  },
+  {
     id: '其他興趣-花式橡筋-null',
     type: 'hobby',
     category: '其他興趣',
     title: '花式橡筋',
+    level: 1000,
+  },
+  {
+    id: '其他興趣-花藝香氛蠟燭-null',
+    type: 'hobby',
+    category: '其他興趣',
+    title: '花藝香氛蠟燭',
     level: 1000,
   },
   {
