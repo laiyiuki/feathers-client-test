@@ -119,6 +119,13 @@ export const categories = [
     type: 'hobby',
   },
   {
+    id: '駕駛',
+    image:
+      'https://s3-ap-northeast-1.amazonaws.com/learnla/categories/ic_driving%403x.png',
+    name: '駕駛',
+    type: 'hobby',
+  },
+  {
     id: '其他興趣',
     image:
       'https://firebasestorage.googleapis.com/v0/b/student-24d3c.appspot.com/o/categories%2Fic_others%403x.png?alt=media&token=c6796190-46af-4e79-b053-1ae5090f91e6',
@@ -3087,6 +3094,13 @@ export const courses = [
     type: 'hobby',
     category: '極限運動',
     title: '駕駛私人飛機',
+    level: 1000,
+  },
+  {
+    id: '駕駛-汽車漂移-null',
+    type: 'hobby',
+    category: '駕駛',
+    title: '汽車漂移',
     level: 1000,
   },
   {
