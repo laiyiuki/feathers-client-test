@@ -2964,6 +2964,13 @@ export const courses = [
     level: 1000,
   },
   {
+    id: '舞蹈-拉丁舞-null',
+    type: 'hobby',
+    category: '舞蹈',
+    title: '拉丁舞',
+    level: 1000,
+  },
+  {
     id: '舞蹈-絲帶舞-null',
     type: 'hobby',
     category: '舞蹈',
